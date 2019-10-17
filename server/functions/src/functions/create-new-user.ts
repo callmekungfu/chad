@@ -25,7 +25,7 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
   // Init database connection and destructure request body
   const db = admin.firestore();
   const {
-    email,
+    userName,
     first_name,
     last_name,
     role,
@@ -34,7 +34,7 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
 
   // Check if user already exist
   try {
-    const userSnap = await db.collection('users').where('email', '==', email).get();
+    const userSnap = await db.collection('users').where('userName', '==', userName).get();
     if (!userSnap.empty) {
       res.status(403).json({
         status: 'failed',
@@ -55,7 +55,7 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     await db.collection('users').doc().set({
-      email,
+      userName,
       first_name,
       last_name,
       role,
@@ -65,7 +65,7 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
       status: 'done',
       message: 'New User Created',
       stored: {
-        email,
+        userName,
         first_name,
         last_name,
       }

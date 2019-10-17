@@ -1,13 +1,13 @@
 export default {
   "required": [
-    "email",
+    "userName",
     "password",
     "first_name",
     "last_name",
     "role"
   ],
   "properties": {
-    "email": {
+    "userName": {
       "type": "string"
     },
     "password": {

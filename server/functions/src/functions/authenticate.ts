@@ -6,7 +6,7 @@ import { LoginWithPasswordSchema } from '../schemas';
 
 // Interface for user details
 interface UserI {
-  email: string;
+  userName: string;
   password: string;
   first_name: string;
   last_name: string;
@@ -32,10 +32,10 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
 
   // DB init & request body destructuring
   const db = admin.firestore();
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
 
   // Find the user by email
-  const userStream = await db.collection('users').where('email', '==', email).get();
+  const userStream = await db.collection('users').where('userName', '==', userName).get();
 
   // If empty return 403 to user
   if (userStream.empty) {
@@ -62,7 +62,7 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
 
   // Return final result
   res.status(200).json({
-    email: user.email,
+    userName: user.userName,
     first_name: user.first_name,
     last_name: user.last_name,
     role: user.role
