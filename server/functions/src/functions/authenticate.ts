@@ -4,6 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { validateJSON } from '../lib/validator';
 import { LoginWithPasswordSchema } from '../schemas';
 
+// Interface for user details
 interface UserI {
   email: string;
   password: string;
@@ -11,6 +12,12 @@ interface UserI {
   last_name: string;
   role: string;
 }
+
+/**
+ * Authenticate With Password
+ * 
+ * This function handles authenticating user using password
+ */
 
 export const authenticateWithPassword = functions.https.onRequest(async (req, res) => {
 
@@ -23,12 +30,14 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
     return;
   }
 
+  // DB init & request body destructuring
   const db = admin.firestore();
-
   const { email, password } = req.body;
 
+  // Find the user by email
   const userStream = await db.collection('users').where('email', '==', email).get();
 
+  // If empty return 403 to user
   if (userStream.empty) {
     console.log('Failed to locate user');
     res.status(403).json({
@@ -38,8 +47,10 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
     return;
   }
 
+  // get user data
   const user: UserI = userStream.docs[0].data() as any;
 
+  // Check login
   if (!bcrypt.compareSync(password, user.password)) {
     console.log('Failed to authenticate user');
     res.status(403).json({
@@ -49,11 +60,11 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
     return;
   };
 
+  // Return final result
   res.status(200).json({
     email: user.email,
     first_name: user.first_name,
     last_name: user.last_name,
     role: user.role
   });
-  return;
 });
