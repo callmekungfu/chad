@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "bcryptjs": "^2.4.3",
-    "firebase-admin": "^8.0.0",
+    "firebase-admin": "^8.6.1",
     "firebase-functions": "^3.1.0",
     "jsonschema": "^1.2.4"
   },
