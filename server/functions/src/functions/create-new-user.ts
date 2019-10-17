@@ -4,25 +4,35 @@ import * as bcrypt from 'bcryptjs';
 import { validateJSON } from '../lib/validator';
 import { NewUserSchema } from '../schemas';
 
+/**
+ * ## Create New User Function
+ * 
+ * This function handles creating new users and inserting
+ * it into the firebase database.
+ * 
+ */
 export const createNewUser = functions.https.onRequest(async (req, res) => {
-  if (!validateJSON(NewUserSchema, req.body).valid) {
+
+  // Schema Validation
+  if (validateJSON(NewUserSchema, req.body).errors.length > 0) {
     res.status(400).json({
       status: 'failed',
       message: 'Request Body Contains Errors'
     });
     return;
   }
-  
-  const db = admin.firestore();
 
+  // Init database connection and destructure request body
+  const db = admin.firestore();
   const {
     email,
     first_name,
     last_name,
     role,
     password,
-  }= req.body;
+  } = req.body;
 
+  // Check if user already exist
   try {
     const userSnap = await db.collection('users').where('email', '==', email).get();
     if (!userSnap.empty) {
@@ -40,6 +50,7 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
     return;
   }
 
+  // Salt password then push to database
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -57,8 +68,6 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
         email,
         first_name,
         last_name,
-        role,
-        password: hash,
       }
     });
   } catch (e) {

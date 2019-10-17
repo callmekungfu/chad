@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as bcrypt from 'bcryptjs';
+import { validateJSON } from '../lib/validator';
+import { LoginWithPasswordSchema } from '../schemas';
 
 interface UserI {
   email: string;
@@ -11,6 +13,16 @@ interface UserI {
 }
 
 export const authenticateWithPassword = functions.https.onRequest(async (req, res) => {
+
+  // Schema Validation
+  if (validateJSON(LoginWithPasswordSchema, req.body).errors.length > 0) {
+    res.status(400).json({
+      status: 'failed',
+      message: 'Request Body Contains Errors'
+    });
+    return;
+  }
+
   const db = admin.firestore();
 
   const { email, password } = req.body;
