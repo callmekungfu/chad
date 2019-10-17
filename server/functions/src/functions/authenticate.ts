@@ -62,6 +62,7 @@ export const authenticateWithPassword = functions.https.onRequest(async (req, re
 
   // Return final result
   res.status(200).json({
+    id: userStream.docs[0].id,
     userName: user.userName,
     first_name: user.first_name,
     last_name: user.last_name,
