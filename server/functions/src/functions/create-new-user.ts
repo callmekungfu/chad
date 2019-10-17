@@ -6,10 +6,11 @@ import { NewUserSchema } from '../schemas';
 
 export const createNewUser = functions.https.onRequest(async (req, res) => {
   if (!validateJSON(NewUserSchema, req.body).valid) {
-    res.sendStatus(400).json({
+    res.status(400).json({
       status: 'failed',
       message: 'Request Body Contains Errors'
     });
+    return;
   }
   
   const db = admin.firestore();
@@ -21,6 +22,24 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
     role,
     password,
   }= req.body;
+
+  try {
+    const userSnap = await db.collection('users').where('email', '==', email).get();
+    if (!userSnap.empty) {
+      res.status(403).json({
+        status: 'failed',
+        message: 'User already exists'
+      });
+      return
+    }
+  } catch (e) {
+    res.status(500).json({
+      status: 'failed',
+      message: 'system failure'
+    });
+    return;
+  }
+
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -43,9 +62,11 @@ export const createNewUser = functions.https.onRequest(async (req, res) => {
       }
     });
   } catch (e) {
-    res.sendStatus(500).json({
+    res.status(500).json({
       status: 'failed',
       message: 'Error Storing Password'
     });
+    return;
   }
+  return;
 });

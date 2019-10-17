@@ -3,10 +3,10 @@ import * as admin from 'firebase-admin';
 
 import { createNewUser } from './functions/create-new-user'
 
+import { authenticateWithPassword } from './functions/authenticate';
+
 admin.initializeApp(functions.config().firebase);
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  response.send("Hello from Firebase!");
-});
-
 export const newUser = createNewUser;
+
+export const login = authenticateWithPassword;
