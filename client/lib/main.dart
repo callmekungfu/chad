@@ -5,6 +5,7 @@ import 'package:client/blocs/example-bloc.dart';
 import 'package:client/theme/style.dart';
 import 'package:client/screens/example1/examplescreen1.dart';
 import 'package:client/screens/example2/examplescreen2.dart';
+import 'package:client/screens/admin/admin-screen.dart';
 
 void main() {
   runApp(ExampleApp());
@@ -13,13 +14,11 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExampleProvider(
-      bloc: ExampleBloc(),
       child: MaterialApp(
-        title: 'ExampleApp',
-        theme: appTheme(),
+        title: 'Client',
         initialRoute: '/',
         routes: <String, WidgetBuilder>{
-          "/": (BuildContext context) => ExScreen1(),
+          "/": (BuildContext context) => AdminScreen(),
           "/ExScreen2": (BuildContext context) => ExScreen2(),
         },
       ),
