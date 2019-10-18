@@ -1,0 +1,24 @@
+```plantuml
+@startuml Account Management
+    skinparam backgroundColor Snow
+
+    abstract class User{
+        -firstName
+        -lastName
+        -userName
+        -password
+        -role
+    }
+
+    class Administrator extends User{
+
+    }
+
+    class Employee extends User{
+        
+    }
+    class Patient extends User{
+
+    }
+@enduml
+```
