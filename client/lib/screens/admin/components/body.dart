@@ -122,14 +122,14 @@ class _HomeMaterialState extends State<Body> {
                                   _showPending(context);
                                   Map<String, dynamic> response =
                                       await _user.create();
-                                  if (response['status'] == "done") {
+                                  if (response['statusCode'] == 200) {
                                     _showSuccess(context);
                                   } else {
                                     _showFailure(context, response['message']);
                                   }
                                 }
                               },
-                              child: Text('Save'))),
+                              child: Text('Create'))),
                     ]))));
   }
 

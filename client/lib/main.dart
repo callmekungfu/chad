@@ -20,6 +20,7 @@ class ExampleApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           "/": (BuildContext context) => AdminScreen(),
           "/ExScreen2": (BuildContext context) => ExScreen2(),
+          "/admin": (BuildContext context) => AdminScreen(),
         },
       ),
     );

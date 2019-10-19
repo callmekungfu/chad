@@ -21,5 +21,7 @@ Future<Map<String, dynamic>> createUser(User user) async {
     print(_);
     return constants.ERROR_RESPONSE;
   }
-  return jsonDecode(response.body);
+  Map<String, dynamic> output = jsonDecode(response.body);
+  output['statusCode'] = response.statusCode;
+  return output;
 }
