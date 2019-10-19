@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Text('Welcome ${user.firstName} ${user.lastName}, you are logged in as ${user.srole}'),
+        child: Text('Welcome ${user.firstName} ${user.lastName}, you are logged in as ${user.role.toString().split('.').last.toLowerCase()}'),
       ),
     );
   }

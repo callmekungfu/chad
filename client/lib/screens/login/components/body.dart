@@ -1,3 +1,4 @@
+import 'package:client/screens/admin/admin-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/credential.dart';
 import 'package:client/screens/home/home.dart';
@@ -52,21 +53,35 @@ class _MyAppState extends State<Body> {
                 _showPending(context);
                 Map<String, dynamic> response = await _credential.login();
                 if (response['statusCode'] == 200) {
-                  User user = new User();
-                  user.firstName = response['first_name'];
-                  user.lastName = response['last_name'];
-                  user.srole = response['role'];
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home(user: user),
-                  ));
-                  _showSuccess(context);
+                  Role role = convertToRole(response['role']);
+                  if (role != null) {
+                    _showSuccess(context);
+                    User user = new User();
+                    user.firstName = response['first_name'];
+                    user.lastName = response['last_name'];
+                    user.role = role;
+                    if (user.role == Role.ADMINISTRATOR) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdminScreen(),
+                          ));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(user: user),
+                          ));
+                    }
+                  } else {
+                    _showFailure(context, "Client role error");
+                  }
                 } else {
                   _showFailure(context, response['message']);
                 }
               }
             },
-            child: Text('Save')),
+            child: Text('Submit')),
       ],
     );
   }
@@ -93,6 +108,16 @@ class _MyAppState extends State<Body> {
     }
   }
 
+  Role convertToRole(String sRole) {
+    try {
+      Role role = Role.values
+          .firstWhere((e) => e.toString() == 'Role.' + sRole.toUpperCase());
+      return role;
+    } catch (_) {
+      return null;
+    }
+  }
+
   _showPending(BuildContext context) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text('Attempting to login'),
@@ -112,20 +137,5 @@ class _MyAppState extends State<Body> {
       content: Text(message),
       backgroundColor: Colors.red,
     ));
-  }
-
-  _sendToServer() {
-    if (_key.currentState.validate()) {
-      // No any error in validation
-      _key.currentState.save();
-      print("Name $name");
-      print("Mobile $mobile");
-      print("Email $email");
-    } else {
-      // validation error
-      setState(() {
-        _validate = true;
-      });
-    }
   }
 }

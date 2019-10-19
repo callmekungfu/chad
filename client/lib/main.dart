@@ -18,7 +18,7 @@ class ExampleApp extends StatelessWidget {
         title: 'Client',
         initialRoute: '/',
         routes: <String, WidgetBuilder>{
-          "/": (BuildContext context) => AdminScreen(),
+          "/": (BuildContext context) => LoginScreen(),
           "/ExScreen2": (BuildContext context) => ExScreen2(),
           "/admin": (BuildContext context) => AdminScreen(),
         },
