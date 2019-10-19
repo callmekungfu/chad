@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:client/blocprovs/example-block-prov.dart';
 import 'package:client/blocs/example-bloc.dart';
 import 'package:client/theme/style.dart';
-import 'package:client/screens/example1/examplescreen1.dart';
+import 'package:client/screens/login/login.dart';
 import 'package:client/screens/example2/examplescreen2.dart';
 import 'package:client/screens/admin/admin-screen.dart';
 
