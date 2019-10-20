@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:client/blocprovs/example-block-prov.dart';
-import 'package:client/blocs/example-bloc.dart';
-import 'package:client/theme/style.dart';
 import 'package:client/screens/login/login.dart';
 import 'package:client/screens/example2/examplescreen2.dart';
 import 'package:client/screens/admin/admin-screen.dart';
@@ -15,7 +12,7 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExampleProvider(
       child: MaterialApp(
-        title: 'Client',
+        title: 'CHAD Clinic',
         initialRoute: '/',
         routes: <String, WidgetBuilder>{
           "/": (BuildContext context) => LoginScreen(),
