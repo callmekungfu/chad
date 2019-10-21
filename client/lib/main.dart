@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:client/blocprovs/example-block-prov.dart';
+import 'package:client/screens/login/login.dart';
+import 'package:client/screens/example2/examplescreen2.dart';
+import 'package:client/screens/admin/admin-screen.dart';
+
+void main() {
+  runApp(ExampleApp());
+}
+class ExampleApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ExampleProvider(
+      child: MaterialApp(
+        title: 'CHAD Clinic',
+        initialRoute: '/',
+        routes: <String, WidgetBuilder>{
+          "/": (BuildContext context) => LoginScreen(),
+          "/ExScreen2": (BuildContext context) => ExScreen2(),
+          "/admin": (BuildContext context) => AdminScreen(),
+        },
+      ),
+    );
+  }
+}

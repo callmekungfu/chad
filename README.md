@@ -1,9 +1,10 @@
-# Forward Inc.
+# CHAD Limited.
 
 ## Team Members
 
 | Name | Student Number |
 | --- | --- |
-| Andrew Forward | 1484511  |
-| Andrew Forward | 1929204  |
-| Ayana Nurse | 2128439 |
+| Yong Lin Wang | 300065862 |
+| Braden Collingwood | 300059397 |
+| Daniel Wu | 300015800 |
+| Anurag Taak | 300073742 |
