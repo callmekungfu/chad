@@ -1,10 +1,6 @@
-import 'package:client/screens/admin/admin-screen.dart';
+import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/service.dart';
-
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
   @override
@@ -13,26 +9,10 @@ class Body extends StatefulWidget {
 
 class _MyAppState extends State<Body> {
   
-  Future<List<Service>> _getUsers() async {
-    var response = await http
-        .get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
-
-    var jsonData = json.decode(response.body);
-
-    List<Service> services = [];
-
-    for (var s in jsonData) {
-      Service service = Service(s['service_id'], s['name'], s['price'], s['role']);
-      services.add(service);
-    }
-
-    return services;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _getUsers(),
+        future: Service.getServiceList(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Container(
@@ -46,18 +26,28 @@ class _MyAppState extends State<Body> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(snapshot.data[index].name),
-                  trailing: IconButton(
+                  trailing: Container(
+                    width: 100.0,
+                    child: Row(children: <Widget>[
+                    IconButton(
                     onPressed: (){
-                      Navigator.push(context, new MaterialPageRoute(builder: (context)=> AdminScreen())); //TODO pass service object to editor screen snapshot.data[index]
+                      Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm(service:snapshot.data[index]))); //TODO pass service object to editor screen snapshot.data[index]
                     },
                     icon: Icon(Icons.edit),
                   ),
+                  IconButton(
+                    onPressed: (){
+                       snapshot.data[index].delete();
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
+                  ],),
+                    ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("Price: \$"+snapshot.data[index].price.toString()),
                       Text("Role: "+snapshot.data[index].role),
-                      
+                      Text("Price: \$"+snapshot.data[index].price.toString()),
                     ],
                   ),
                   onTap: (){

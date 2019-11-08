@@ -12,7 +12,7 @@ class ServiceFormWidget extends StatefulWidget {
 
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _service = Service();
+  final _service = Service(null,null,null,null);
   final controls = {
     'name': new TextEditingController(),
     'role': new TextEditingController(),
