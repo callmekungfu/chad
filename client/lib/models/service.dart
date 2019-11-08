@@ -9,4 +9,6 @@ class Service {
   Future<Map<String, dynamic>> create() async {
     return createService(this);
   }
+  
+  Service(this.serviceId, this.name, this.price, this.role);
 }
