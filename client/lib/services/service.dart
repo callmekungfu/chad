@@ -56,8 +56,8 @@ Future<List<Service>> getServices() async {
 
   http.Response response;
   try{
-    //response = await http.get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
-    response = await http.get('${constants.API}/getServices');
+    response = await http.get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
+    //response = await http.get('${constants.API}/getServices');
   }catch(_){
     print(_);
     return null;//TODO return an error response
