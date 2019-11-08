@@ -1,3 +1,5 @@
+import 'package:client/models/service.dart';
+import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
 import 'package:client/blocprovs/example-block-prov.dart';
 import 'package:client/screens/login/login.dart';
@@ -16,7 +18,8 @@ class ExampleApp extends StatelessWidget {
         title: 'CHAD Clinic',
         initialRoute: '/serviceBrowser',
         routes: <String, WidgetBuilder>{
-          "/": (BuildContext context) => LoginScreen(),
+          // "/": (BuildContext context) => LoginScreen(),
+          "/": (BuildContext context) => ServiceManagementForm(),
           "/ExScreen2": (BuildContext context) => ExScreen2(),
           "/admin": (BuildContext context) => AdminScreen(),
           "/serviceBrowser": (BuildContext context) => ServiceBrowserScreen(),
