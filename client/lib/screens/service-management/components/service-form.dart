@@ -12,14 +12,31 @@ class ServiceFormWidget extends StatefulWidget {
 
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  
+  final _service = Service();
+  final controls = {
+    'name': new TextEditingController(),
+    'role': new TextEditingController(),
+    'price': new TextEditingController(),
+  };
+
+  @override
+  void initState() {
+    if (widget.service != null) {
+      var s = widget.service;
+      controls['name'].text = s.name;
+      controls['role'].text = s.role;
+      controls['price'].text = s.price != null ? s.price.toString() : null;
+    }
+    return super.initState();
+  }
+
   Widget build(BuildContext context) {
-    Service _service = widget.service != null ? widget.service : Service();
-    Map<String, TextEditingController> model = {
-      'name': new TextEditingController(text: _service.name),
-      'role': new TextEditingController(text: _service.role),
-      'price': new TextEditingController(text: _service.price != null ? _service.price.toString() : null),
-    };
+    // _service = widget.service != null ? widget.service : Service();
+    // Map<String, TextEditingController> model = {
+    //   'name': new TextEditingController(text: _service.name),
+    //   'role': new TextEditingController(text: _service.role),
+    //   'price': new TextEditingController(text: _service.price != null ? _service.price.toString() : null),
+    // };
     return 
     SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -37,7 +54,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                 }
                 return null;
               },
-              controller: model['name'],
+              controller: controls['name'],
               onSaved: (val) => setState(() => _service.name = val),
             ),
             TextFormField(
@@ -49,7 +66,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                 }
                 return null;
               },
-              controller: model['role'],
+              controller: controls['role'],
               onSaved: (val) => setState(() => _service.role = val),
             ),
             TextFormField(
@@ -60,7 +77,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                 }
                 return null;
               },
-              controller: model['price'],
+              controller: controls['price'],
               keyboardType: TextInputType.number,
               onSaved: (val) => setState(() => _service.price = double.parse(val)),
             ),

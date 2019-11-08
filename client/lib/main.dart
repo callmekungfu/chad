@@ -17,8 +17,8 @@ class ExampleApp extends StatelessWidget {
         title: 'CHAD Clinic',
         initialRoute: '/',
         routes: <String, WidgetBuilder>{
-          "/": (BuildContext context) => LoginScreen(),
-          "/serviceManagement": (BuildContext context) => ServiceManagementForm(),
+          // "/": (BuildContext context) => LoginScreen(),
+          "/": (BuildContext context) => ServiceManagementForm(),
           "/ExScreen2": (BuildContext context) => ExScreen2(),
           "/admin": (BuildContext context) => AdminScreen(),
         },
