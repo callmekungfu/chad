@@ -42,6 +42,7 @@ class _MyAppState extends State<Body> {
         new TextFormField(
             decoration: new InputDecoration(hintText: 'Password'),
             maxLength: 32,
+            obscureText: true,
             validator: validatePassword,
             onSaved: (val) => setState(() => _credential.password = val)),
         new SizedBox(height: 15.0),

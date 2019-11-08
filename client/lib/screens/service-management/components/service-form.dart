@@ -71,7 +71,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                      .showSnackBar(SnackBar(content: Text('Creating Service...')));
                   }
                 },
                 child: Text('Create Service'),

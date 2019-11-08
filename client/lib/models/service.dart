@@ -1,6 +1,7 @@
 import 'package:client/services/service.dart';
 
 class Service {
+  String id;
   String name;
   String role;
   double price;
