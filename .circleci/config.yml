@@ -4,10 +4,11 @@ jobs:
     docker: 
       - image: kuronekomichael/flutter:jenkins-slave
     steps:
-      - checkout # check out the code in the project directory
+      - checkout
       - run:
           name: 'Running Flutter Test'
           command: |
             cd client
             flutter upgrade
+            dartanalyzer .
             flutter test
