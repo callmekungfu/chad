@@ -13,9 +13,9 @@ class Service {
   Future<Map<String, dynamic>> update() async {
     return editService(this);
   }
-
-  Future<Map<String, dynamic>> delete() async {
-    return null;//deleteService(this); TODO implement delete service
+  
+  void delete() async {
+    return deleteService(this); 
   }
 
   static Future<List<Service>> getServiceList() async {
