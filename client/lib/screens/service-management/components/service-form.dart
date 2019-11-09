@@ -87,8 +87,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
               child: RaisedButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('Creating Service...')));
+                    _showLoading(context);
                   }
                 },
                 child: Text('Create Service'),
@@ -98,5 +97,10 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
         ),
       ),
     );
+  }
+  
+  _showLoading(BuildContext context) {
+    Scaffold.of(context)
+      .showSnackBar(SnackBar(content: Text('Creating Service...')));
   }
 }
