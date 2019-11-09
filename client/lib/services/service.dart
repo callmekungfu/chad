@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> createService(Service service) async {
   http.Response response;
 
   try {
-    response = await http.post('${constants.API}/createService',
+    response = await http.post('${constants.DEV_API}/services',
       headers: headers, body: jsonEncode(body));
   } catch(_) {
     print(_);
@@ -36,12 +36,11 @@ Future<Map<String, dynamic>> editService(Service service) async {
     'name': service.name,
     'role': service.role,
     'price': service.price,
-    'id': service.id,
   };
   http.Response response;
 
   try {
-    response = await http.post('${constants.API}/updateService',
+    response = await http.put('${constants.DEV_API}/services/${service.id}',
       headers: headers, body: jsonEncode(body));
   } catch(_) {
     print(_);
