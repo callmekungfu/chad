@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "this-is-a-firebase-project"
+    "default": "this-is-a-firebase-project",
+    "develop": "this-is-a-firebase-project"
   }
 }
