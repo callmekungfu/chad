@@ -5,4 +5,5 @@ jobs:
       - image: kuronekomichael/flutter:jenkins-slave
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello circleci" # run the `echo` command
+      - run: cd client
+      - run: flutter test
