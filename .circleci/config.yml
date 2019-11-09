@@ -9,4 +9,5 @@ jobs:
           name: 'Running Flutter Test'
           command: |
             cd client
+            flutter upgrade
             flutter test
