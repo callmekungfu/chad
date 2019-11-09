@@ -1,7 +1,5 @@
 {
   "projects": {
-    "default": "this-is-a-firebase-project",
-    "production": "chaddb-a0502",
-    "develop": "this-is-a-firebase-project"
+    "default": "this-is-a-firebase-project"
   }
 }
