@@ -26,76 +26,75 @@ class _HomeMaterialState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return 
+      SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
         child: Builder(
-            builder: (context) => Form(
-                key: _formKey,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration(labelText: 'First name'),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter your first name';
-                          }
-                          return null;
-                        },
-                        onSaved: (val) => setState(() => _user.firstName = val),
+          builder: (context) => 
+            Form(
+              key: _formKey,
+              child: 
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'First name'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
+                      onSaved: (val) => setState(() => _user.firstName = val),
                       ),
-                      TextFormField(
-                          decoration: InputDecoration(labelText: 'Last name'),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter your last name.';
-                            }
-                            return null;
-                          },
-                          onSaved: (val) =>
-                              setState(() => _user.lastName = val)),
-                      TextFormField(
-                          decoration: InputDecoration(labelText: 'Email'),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            return this.validateEmail(value);
-                          },
-                          onSaved: (val) =>
-                              setState(() => _user.userName = val)),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: 'Password'),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter a password.';
-                          } else if (value.length < 8) {
-                            return 'Password must contain more than 8 characters.';
-                          }
-                          return null;
-                        },
-                        onChanged: (val) {
-                          this.password = val;
-                        },
-                      ),
-                      TextFormField(
-                          decoration:
-                              InputDecoration(labelText: 'Re-enter password'),
-                          validator: (value) {
-                            if (value != this.password) {
-                              return 'Please ensure that both passwords match.';
-                            }
-                            return null;
-                          },
-                          onSaved: (val) =>
-                              setState(() => _user.password = val)),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Last name'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter your last name.';
+                        }
+                        return null;
+                      },
+                      onSaved: (val) =>
+                          setState(() => _user.lastName = val)),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Email'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) => this.validateEmail(value),
+                      onSaved: (val) =>
+                          setState(() => _user.userName = val)),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Password'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter a password.';
+                        } else if (value.length < 8) {
+                          return 'Password must contain more than 8 characters.';
+                        }
+                        return null;
+                      },
+                      onChanged: (val) {
+                        this.password = val;
+                      },
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Re-enter password'),
+                      validator: (value) {
+                        if (value != this.password) {
+                          return 'Please ensure that both passwords match.';
+                        }
+                        return null;
+                      },
+                      onSaved: (val) => setState(() => _user.password = val)),
                       DropdownButtonFormField<Role>(
-                        hint: new Text('Select a role'),
+                        hint: Text('Select a role'),
                         items: Role.values.map((Role role) {
-                          String s =
-                              role.toString().split('.').last.toLowerCase();
-                          return new DropdownMenuItem<Role>(
+                          String s = role.toString().split('.').last.toLowerCase();
+                          return 
+                            DropdownMenuItem<Role>(
                               value: role,
-                              child: new Text(
-                                  '${s[0].toUpperCase()}${s.substring(1)}'));
+                              child: Text('${s[0].toUpperCase()}${s.substring(1)}')
+                            );
                         }).toList(),
                         value: _role,
                         onChanged: (Role role) {
@@ -112,25 +111,31 @@ class _HomeMaterialState extends State<Body> {
                         onSaved: (val) => setState(() => _user.role = val),
                       ),
                       Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 16.0),
-                          child: RaisedButton(
-                              onPressed: () async {
-                                final form = _formKey.currentState;
-                                if (form.validate()) {
-                                  form.save();
-                                  _showPending(context);
-                                  Map<String, dynamic> response =
-                                      await _user.create();
-                                  if (response['statusCode'] == 200) {
-                                    _showSuccess(context);
-                                  } else {
-                                    _showFailure(context, response['msg']);
-                                  }
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 16.0),
+                        child: 
+                          RaisedButton(
+                            onPressed: () async {
+                              final form = _formKey.currentState;
+                              if (form.validate()) {
+                                form.save();
+                                _showPending(context);
+                                Map<String, dynamic> response =
+                                    await _user.create();
+                                if (response['statusCode'] == 200) {
+                                  _showSuccess(context);
+                                } else {
+                                  _showFailure(context, response['msg']);
                                 }
-                              },
-                              child: Text('Create'))),
-                    ]))));
+                              }
+                            },
+                            child: Text('Create')
+                          )
+                      ),
+                    ])
+                  )
+      )
+    );
   }
 
   _showPending(BuildContext context) {
