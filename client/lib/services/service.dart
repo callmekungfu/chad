@@ -56,8 +56,9 @@ Future<List<Service>> getServices() async {
 
   http.Response response;
   try{
-    response = await http.get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
-    //response = await http.get('${constants.API}/getServices');
+    //response = await http.get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
+    response = await http.get("https://us-central1-this-is-a-firebase-project.cloudfunctions.net/api/v1/services");
+    //response = await http.get('${constants.API}/services');
   }catch(_){
     print(_);
     return null;//TODO return an error response
@@ -67,15 +68,32 @@ Future<List<Service>> getServices() async {
 
   List<Service> services = [];
 
-  for (var s in jsonData) {
+  for (var s in jsonData['service']) {
+    var data = s['data'];
     var service = Service(
-      id: s['service_id'],
-      name: s['name'],
-      price: s['price'],
-      role: s['role']
+      id: s['id'], 
+      name: data['name'],
+      role: data['role'],
+      price: data['price'].toDouble(),
     );
     services.add(service);
   }
 
   return services;
+}
+
+
+void deleteService(Service service) async {
+
+  http.Response response;
+  try{
+    //response = await http.get("http://www.json-generator.com/api/json/get/cjUkMLeZqq?indent=2");
+    response = await http.delete("https://us-central1-this-is-a-firebase-project.cloudfunctions.net/api/v1/services/${service.id}");
+    //response = await http.get('${constants.API}/services');
+  }catch(_){
+    print(_);
+    //return false;//TODO return an error response
+  }
+
+  
 }
