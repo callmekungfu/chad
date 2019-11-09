@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class ServiceFormWidget extends StatefulWidget {
   final Service service;
+  // Constructor
   ServiceFormWidget({Key key, this.service}) : super(key: key);
+
   @override
   ServiceFormWidgetState createState() {
     return ServiceFormWidgetState();
@@ -13,12 +15,14 @@ class ServiceFormWidget extends StatefulWidget {
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _service = Service();
+  // Form Text Field Controls
   final controls = {
     'name': new TextEditingController(),
     'role': new TextEditingController(),
     'price': new TextEditingController(),
   };
 
+  // ComponentDidMount
   @override
   void initState() {
     if (widget.service != null) {
@@ -30,6 +34,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     return super.initState();
   }
 
+  // Render
   Widget build(BuildContext context) {
     return 
     SingleChildScrollView(
@@ -70,10 +75,9 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                     form.save();
                     _showLoading(context);
                     if (widget.service == null) {
-                      // DO POST
                       handlePost(this._service);
                     } else {
-                      // DO PUT
+                      handlePut(this._service);
                     }
                   }
                 },
@@ -86,6 +90,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     );
   }
 
+  // Handles the post call action
   handlePost(Service service) async {
     var res = await service.create();
     if (!res['isSuccess']) {
@@ -95,6 +100,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     _showSuccess(context);
   }
 
+  // Handles the put call action
   handlePut(Service service) async {
     var res = await service.update();
     if (!res['isSuccess']) {
@@ -104,6 +110,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     _showSuccess(context);
   }
 
+  // Validator, checks if field is empty
   String validateEmpty(String value, String prompt) {
     if (value.isEmpty) {
       return prompt;
@@ -111,15 +118,18 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     return null;
   }
 
+  // Gets the button text depending on the role of the form
   buttonText(Service service) {
     return service != null ? 'Modify Service' : 'Create Service';
   }
   
+  // Show loading snackbar
   _showLoading(BuildContext context) {
     Scaffold.of(context)
       .showSnackBar(SnackBar(content: Text('Creating Service...')));
   }
 
+  // Show Failure snack bar
   _showFailure(BuildContext context, String message) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -127,6 +137,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     ));
   }
 
+  // Show success snack bar
   _showSuccess(BuildContext context) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text('Service Created!'),
