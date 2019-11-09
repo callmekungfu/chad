@@ -5,7 +5,10 @@ import 'components/service-form.dart';
 
 class ServiceManagementForm extends StatelessWidget {
   final Service service;
+
+  // Constructor
   ServiceManagementForm({Key key, this.service}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
