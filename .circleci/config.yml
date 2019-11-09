@@ -5,5 +5,10 @@ jobs:
       - image: kuronekomichael/flutter:jenkins-slave
     steps:
       - checkout # check out the code in the project directory
-      - run: cd client
+      - run:
+          name: 'Changing Directory'
+          command: |
+            ls
+            cd client
+            ls
       - run: flutter test
