@@ -32,8 +32,8 @@ export async function login(req: express.Request, res: express.Response) {
 
       if (!bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({
-          status: 'failed',
-          message: 'invalid credentials'
+          isSuccess: false,
+          msg: 'invalid credentials'
         });
       };
 

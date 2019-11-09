@@ -1,6 +1,6 @@
 
-export interface Role {
-  PATIENT: 'patient',
-  ADMINISTRATOR: 'administrator',
-  EMPLOYEE: 'employee'
+export enum Role {
+  PATIENT = 'patient',
+  ADMINISTRATOR = 'administrator',
+  EMPLOYEE = 'employee'
 }
