@@ -13,7 +13,7 @@ class ServiceBrowserScreen extends StatelessWidget {
       body: Body(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm())); //TODO Change navigation to edit screen
+          Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm()));
         },
         child: Icon(Icons.add),
       ),
