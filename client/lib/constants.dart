@@ -5,5 +5,6 @@ const String DEV_API = 'https://us-central1-this-is-a-firebase-project.cloudfunc
 
 const Map<String, dynamic> ERROR_RESPONSE = {
   "status": "failed",
-  "message": "An exception occured. Please try again later."
+  "isSuccess": false,
+  "msg": "An exception occured. Please try again later."
 };

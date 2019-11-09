@@ -65,8 +65,16 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
               margin: const EdgeInsets.only(top: 20),
               child: RaisedButton(
                 onPressed: () {
-                  if (_formKey.currentState.validate()) {
+                  var form = _formKey.currentState;
+                  if (form.validate()) {
+                    form.save();
                     _showLoading(context);
+                    if (widget.service == null) {
+                      // DO POST
+                      handlePost(this._service);
+                    } else {
+                      // DO PUT
+                    }
                   }
                 },
                 child: Text(buttonText(widget.service)),
@@ -76,6 +84,24 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
         ),
       ),
     );
+  }
+
+  handlePost(Service service) async {
+    var res = await service.create();
+    if (!res['isSuccess']) {
+      _showFailure(context, res['msg']);
+      return;
+    }
+    _showSuccess(context);
+  }
+
+  handlePut(Service service) async {
+    var res = await service.update();
+    if (!res['isSuccess']) {
+      _showFailure(context, res['msg']);
+      return;
+    }
+    _showSuccess(context);
   }
 
   String validateEmpty(String value, String prompt) {
@@ -92,5 +118,19 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
   _showLoading(BuildContext context) {
     Scaffold.of(context)
       .showSnackBar(SnackBar(content: Text('Creating Service...')));
+  }
+
+  _showFailure(BuildContext context, String message) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
+  }
+
+  _showSuccess(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Service Created!'),
+      backgroundColor: Colors.green,
+    ));
   }
 }
