@@ -9,10 +9,6 @@ void main() {
         expect(form.validateEmail('this_is_not_a_email'), 'Please enter a valid email');
         expect(form.validateEmail('email@email.ca'), null);
       });
-
-      test('should fail', () {
-        expect(true, false);
-      });
     });
   });
 }
