@@ -18,6 +18,11 @@ class Service {
     return getServices();
   }
 
-  Service(this.id, this.name, this.price, this.role);
+  Service({String id, String name, String role, double price}) {
+    this.id = id;
+    this.name = name;
+    this.role = role;
+    this.price = price;
+  }
   
 }

@@ -68,7 +68,12 @@ Future<List<Service>> getServices() async {
   List<Service> services = [];
 
   for (var s in jsonData) {
-    Service service = Service(s['service_id'], s['name'], s['price'], s['role']);
+    var service = Service(
+      id: s['service_id'],
+      name: s['name'],
+      price: s['price'],
+      role: s['role']
+    );
     services.add(service);
   }
 

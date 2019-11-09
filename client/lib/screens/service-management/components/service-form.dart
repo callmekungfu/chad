@@ -12,7 +12,7 @@ class ServiceFormWidget extends StatefulWidget {
 
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _service = Service(null,null,null,null);
+  final _service = Service();
   final controls = {
     'name': new TextEditingController(),
     'role': new TextEditingController(),
@@ -31,12 +31,6 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
   }
 
   Widget build(BuildContext context) {
-    // _service = widget.service != null ? widget.service : Service();
-    // Map<String, TextEditingController> model = {
-    //   'name': new TextEditingController(text: _service.name),
-    //   'role': new TextEditingController(text: _service.role),
-    //   'price': new TextEditingController(text: _service.price != null ? _service.price.toString() : null),
-    // };
     return 
     SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
