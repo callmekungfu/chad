@@ -42,35 +42,20 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
             TextFormField(
               maxLength: 120,
               decoration: InputDecoration(labelText: 'Service Name'),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Service Name cannot be empty.';
-                }
-                return null;
-              },
+              validator: (value) => validateEmpty(value, 'Service Name must be sepcified.'),
               controller: controls['name'],
               onSaved: (val) => setState(() => _service.name = val),
             ),
             TextFormField(
               maxLength: 120,
               decoration: InputDecoration(labelText: 'Role Responsible'),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'A role that provides this service must be specified.';
-                }
-                return null;
-              },
+              validator: (value) => validateEmpty(value, 'A role that provides this service must be specified.'),
               controller: controls['role'],
               onSaved: (val) => setState(() => _service.role = val),
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Price'),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Service Price cannot be empty.';
-                }
-                return null;
-              },
+              validator: (value) => validateEmpty(value, 'Service Price cannot be empty.'),
               controller: controls['price'],
               keyboardType: TextInputType.number,
               onSaved: (val) => setState(() => _service.price = double.parse(val)),
@@ -84,13 +69,24 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                     _showLoading(context);
                   }
                 },
-                child: Text('Create Service'),
+                child: Text(buttonText(widget.service)),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String validateEmpty(String value, String prompt) {
+    if (value.isEmpty) {
+      return prompt;
+    }
+    return null;
+  }
+
+  buttonText(Service service) {
+    return service != null ? 'Modify Service' : 'Create Service';
   }
   
   _showLoading(BuildContext context) {
