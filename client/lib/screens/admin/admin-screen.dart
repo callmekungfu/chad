@@ -6,7 +6,7 @@ class AdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Admin"),
+        title: Text("Create a New User"),
       ),
       body: Body(),
     );

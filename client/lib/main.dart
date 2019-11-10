@@ -1,25 +1,27 @@
+import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
-import 'package:client/blocprovs/example-block-prov.dart';
 import 'package:client/screens/login/login.dart';
-import 'package:client/screens/example2/examplescreen2.dart';
 import 'package:client/screens/admin/admin-screen.dart';
+import 'package:client/screens/serviceBrowser/service-browser-screen.dart';
+import 'package:client/screens/adminHubView/adminHubView.dart';
 
 void main() {
-  runApp(ExampleApp());
+  runApp(ChadApp());
 }
-class ExampleApp extends StatelessWidget {
+class ChadApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ExampleProvider(
-      child: MaterialApp(
+    return 
+      MaterialApp(
         title: 'CHAD Clinic',
-        initialRoute: '/',
+        initialRoute: '/admin/user',
         routes: <String, WidgetBuilder>{
           "/": (BuildContext context) => LoginScreen(),
-          "/ExScreen2": (BuildContext context) => ExScreen2(),
-          "/admin": (BuildContext context) => AdminScreen(),
+          "/admin/service/form": (BuildContext context) => ServiceManagementForm(),
+          "/admin/user": (BuildContext context) => AdminScreen(),
+          "/admin/service": (BuildContext context) => ServiceBrowserScreen(),
+          "/admin": (BuildContext context) => AdminHubView(),
         },
-      ),
-    );
+      );
   }
 }
