@@ -1,4 +1,5 @@
 import 'package:client/models/service.dart';
+import 'package:client/screens/serviceBrowser/service-browser-screen.dart';
 import 'package:flutter/material.dart';
 
 class ServiceFormWidget extends StatefulWidget {
@@ -14,7 +15,7 @@ class ServiceFormWidget extends StatefulWidget {
 
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _service = Service();
+  Service _service = Service();
   // Form Text Field Controls
   final controls = {
     'name': new TextEditingController(),
@@ -60,7 +61,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Price'),
-              validator: (value) => validateEmpty(value, 'Service Price cannot be empty.'),
+              validator: (value) => validatePrice(value, 'Service Price cannot be empty.'),
               controller: controls['price'],
               keyboardType: TextInputType.number,
               onSaved: (val) => setState(() => _service.price = double.parse(val)),
@@ -77,6 +78,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                     if (widget.service == null) {
                       handlePost(this._service);
                     } else {
+                      this._service.id = widget.service.id;
                       handlePut(this._service);
                     }
                   }
@@ -97,7 +99,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
       _showFailure(context, res['msg']);
       return;
     }
-    _showSuccess(context);
+    _showSuccess(context, service);
   }
 
   // Handles the put call action
@@ -107,7 +109,12 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
       _showFailure(context, res['msg']);
       return;
     }
-    _showSuccess(context);
+    _showSuccess(context, widget.service);
+    Navigator.push(context, 
+      MaterialPageRoute(
+        builder: (context) => ServiceBrowserScreen(),
+      )
+    );
   }
 
   // Validator, checks if field is empty
@@ -118,15 +125,33 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     return null;
   }
 
+  String validatePrice(String value, String prompt) {
+    if (value.isEmpty) {
+      return prompt;
+    }
+    return !isNumericPositive(value) ? 'Price must be a positive number' : null;
+  }
+
+  bool isNumericPositive(String s) {
+  if(s == null) {
+    return false;
+  }
+  return double.parse(s) != null && double.parse(s) > 0;
+}
+
   // Gets the button text depending on the role of the form
   buttonText(Service service) {
     return service != null ? 'Modify Service' : 'Create Service';
+  }
+
+  snackText(Service service) {
+    return service.id != null ? 'Service Updated' : 'Service Created';
   }
   
   // Show loading snackbar
   _showLoading(BuildContext context) {
     Scaffold.of(context)
-      .showSnackBar(SnackBar(content: Text('Creating Service...')));
+      .showSnackBar(SnackBar(content: Text('Please wait...')));
   }
 
   // Show Failure snack bar
@@ -138,9 +163,9 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
   }
 
   // Show success snack bar
-  _showSuccess(BuildContext context) {
+  _showSuccess(BuildContext context, Service service) {
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Service Created!'),
+      content: Text(snackText(service)),
       backgroundColor: Colors.green,
     ));
   }
