@@ -1,7 +1,7 @@
 import 'package:client/services/service.dart';
 
 class Service {
-  String id;
+  String id; 
   String name;
   String role;
   double price;
@@ -14,7 +14,10 @@ class Service {
     return editService(this);
   }
   
-  
+  Future<bool> delete() async {
+    return deleteService(this);
+  }
+
 
   static Future<List<Service>> getServiceList() async {
     return getServices();
