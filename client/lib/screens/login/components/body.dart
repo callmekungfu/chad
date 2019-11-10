@@ -1,4 +1,5 @@
 import 'package:client/screens/admin/admin-screen.dart';
+import 'package:client/screens/adminHubView/adminHubView.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/credential.dart';
 import 'package:client/screens/home/home.dart';
@@ -64,7 +65,7 @@ class _MyAppState extends State<Body> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AdminScreen(),
+                            builder: (context) => AdminHubView(),
                           ));
                     } else {
                       Navigator.push(
