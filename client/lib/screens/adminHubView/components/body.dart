@@ -1,4 +1,5 @@
 import 'package:client/screens/admin/admin-screen.dart';
+import 'package:client/screens/admin/service-browser-screen.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -14,7 +15,7 @@ class Body extends StatelessWidget {
         ),
         new RaisedButton(
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => AdminScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceBrowserScreen()));
           },
           child: Text('Service Browser'),
         )
