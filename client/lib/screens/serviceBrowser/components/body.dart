@@ -9,10 +9,36 @@ class Body extends StatefulWidget {
 
 class _MyAppState extends State<Body> {
   
+  Future<List<Service>> service;
+
+  //Service.getServiceList()
+
+  @override
+  void initState() {
+    super.initState();
+
+    // initial load
+    setState(() {
+      service = Service.getServiceList();
+    });
+    print("init");
+    
+  }
+
+  void refreshList() {
+    // reload
+    setState(() {
+      service = Service.getServiceList();
+    });
+
+    print("refresh");
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Service.getServiceList(),
+    return FutureBuilder<List<Service>>(
+        future: service = Service.getServiceList(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Container(
@@ -20,6 +46,7 @@ class _MyAppState extends State<Body> {
               child: Text("Loading..."),
             ));
           } else {
+            
             return ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: snapshot.data.length,
@@ -37,7 +64,8 @@ class _MyAppState extends State<Body> {
                   ),
                   IconButton(
                     onPressed: (){
-                       snapshot.data[index].delete();
+                       snapshot.data[index].delete().then(refreshList());
+                       refreshList();
                     },
                     icon: Icon(Icons.delete),
                   ),

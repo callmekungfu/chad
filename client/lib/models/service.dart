@@ -1,7 +1,7 @@
 import 'package:client/services/service.dart';
 
 class Service {
-  String id;
+  String id; 
   String name;
   String role;
   double price;
@@ -13,10 +13,11 @@ class Service {
   Future<Map<String, dynamic>> update() async {
     return editService(this);
   }
-
-  Future<Map<String, dynamic>> delete() async {
-    return null;//deleteService(this); TODO implement delete service
+  
+  Future<bool> delete() async {
+    return deleteService(this);
   }
+
 
   static Future<List<Service>> getServiceList() async {
     return getServices();
