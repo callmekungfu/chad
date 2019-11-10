@@ -11,18 +11,15 @@ class _MyAppState extends State<Body> {
   
   Future<List<Service>> service;
 
-  //Service.getServiceList()
-
   @override
   void initState() {
     super.initState();
+    refreshList();
+  }
 
-    // initial load
-    setState(() {
-      service = Service.getServiceList();
-    });
-    print("init");
-    
+  @override
+  void didUpdateWidget(Widget old) {
+    refreshList();
   }
 
   void refreshList() {
@@ -30,15 +27,12 @@ class _MyAppState extends State<Body> {
     setState(() {
       service = Service.getServiceList();
     });
-
-    print("refresh");
   }
-
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Service>>(
-        future: service = Service.getServiceList(),
+        future: service,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return Container(
