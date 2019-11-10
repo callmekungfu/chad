@@ -15,7 +15,7 @@ class ServiceFormWidget extends StatefulWidget {
 
 class ServiceFormWidgetState extends State<ServiceFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _service = Service();
+  Service _service = Service();
   // Form Text Field Controls
   final controls = {
     'name': new TextEditingController(),
@@ -78,6 +78,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
                     if (widget.service == null) {
                       handlePost(this._service);
                     } else {
+                      this._service.id = widget.service.id;
                       handlePut(this._service);
                     }
                   }
@@ -128,14 +129,14 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     if (value.isEmpty) {
       return prompt;
     }
-    return isNumeric(value) ? 'Value must be a number' : '';
+    return !isNumericPositive(value) ? 'Price must be a positive number' : null;
   }
 
-  bool isNumeric(String s) {
+  bool isNumericPositive(String s) {
   if(s == null) {
     return false;
   }
-  return double.parse(s) != null;
+  return double.parse(s) != null && double.parse(s) > 0;
 }
 
   // Gets the button text depending on the role of the form
@@ -144,7 +145,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
   }
 
   snackText(Service service) {
-    return service != null ? 'Service Updated' : 'Service Created';
+    return service.id != null ? 'Service Updated' : 'Service Created';
   }
   
   // Show loading snackbar
