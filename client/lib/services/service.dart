@@ -93,6 +93,4 @@ Future<bool> deleteService(Service service) async {
     print(_);
     return false;//TODO return an error response
   }
-
-
 }
