@@ -15,10 +15,16 @@
     }
 
     class Employee extends User{
-        
+
     }
     class Patient extends User{
 
+    }
+
+    class Service{
+      -role
+      -price
+      -name
     }
 @enduml
 ```
