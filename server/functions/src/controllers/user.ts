@@ -22,7 +22,7 @@ export async function insertOne(req: express.Request, res: express.Response) {
       }
       const userFind = await Users.findOne(user.userName);
       if (userFind.exists) {
-        return res.status(201).json({
+        return res.status(409).json({
           isSuccess: false,
           msg: 'user already exists'
         });
