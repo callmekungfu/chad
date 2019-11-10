@@ -6,6 +6,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(child : Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new RaisedButton(

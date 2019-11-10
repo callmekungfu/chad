@@ -14,13 +14,13 @@ class ChadApp extends StatelessWidget {
     return 
       MaterialApp(
         title: 'CHAD Clinic',
-        initialRoute: '/admin/hub',
+        initialRoute: '/admin',
         routes: <String, WidgetBuilder>{
           "/": (BuildContext context) => LoginScreen(),
           "/admin/service/form": (BuildContext context) => ServiceManagementForm(),
-          "/admin": (BuildContext context) => AdminScreen(),
+          "/admin/user": (BuildContext context) => AdminScreen(),
           "/admin/service": (BuildContext context) => ServiceBrowserScreen(),
-          "/admin/hub": (BuildContext context) => AdminHubView(),
+          "/admin": (BuildContext context) => AdminHubView(),
         },
       );
   }
