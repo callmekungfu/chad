@@ -63,9 +63,13 @@ class _MyAppState extends State<Body> {
                     icon: Icon(Icons.edit),
                   ),
                   IconButton(
-                    onPressed: (){
-                       snapshot.data[index].delete().then(refreshList());
-                       refreshList();
+                    onPressed: () async{
+                       bool result = await snapshot.data[index].delete();
+                       if(result){
+                         refreshList();
+                       }else{
+                         print("error");
+                       }
                     },
                     icon: Icon(Icons.delete),
                   ),
