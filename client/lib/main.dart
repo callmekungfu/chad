@@ -14,7 +14,7 @@ class ChadApp extends StatelessWidget {
     return 
       MaterialApp(
         title: 'CHAD Clinic',
-        initialRoute: '/admin',
+        initialRoute: '/admin/user',
         routes: <String, WidgetBuilder>{
           "/": (BuildContext context) => LoginScreen(),
           "/admin/service/form": (BuildContext context) => ServiceManagementForm(),

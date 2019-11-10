@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> createService(Service service) async {
   http.Response response;
 
   try {
-    response = await http.post('${constants.DEV_API}/services',
+    response = await http.post('${constants.API}/services',
       headers: headers, body: jsonEncode(body));
   } catch(_) {
     print(_);
@@ -40,7 +40,7 @@ Future<Map<String, dynamic>> editService(Service service) async {
   http.Response response;
 
   try {
-    response = await http.put('${constants.DEV_API}/services/${service.id}',
+    response = await http.put('${constants.API}/services/${service.id}',
       headers: headers, body: jsonEncode(body));
   } catch(_) {
     print(_);
@@ -55,7 +55,7 @@ Future<List<Service>> getServices() async {
 
   http.Response response;
   try{
-    response = await http.get("${constants.DEV_API}/services");
+    response = await http.get("${constants.API}/services");
     print(response);
   }catch(_){
     print(_);
@@ -87,7 +87,7 @@ Future<bool> deleteService(Service service) async {
 
   http.Response response;
   try{
-    response = await http.delete("${constants.DEV_API}/services/${service.id}");
+    response = await http.delete("${constants.API}/services/${service.id}");
     return true;
   }catch(_){
     print(_);

@@ -100,6 +100,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
       return;
     }
     _showSuccess(context, service);
+    clearInputs(controls);
   }
 
   // Handles the put call action
@@ -125,6 +126,12 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
     return null;
   }
 
+  clearInputs(Map<String, TextEditingController> controls) {
+    controls['name'].clear();
+    controls['role'].clear();
+    controls['price'].clear();
+  }
+
   String validatePrice(String value, String prompt) {
     if (value.isEmpty) {
       return prompt;
@@ -136,7 +143,7 @@ class ServiceFormWidgetState extends State<ServiceFormWidget> {
   if(s == null) {
     return false;
   }
-  return double.parse(s) != null && double.parse(s) > 0;
+  return double.parse(s) != null && double.parse(s) >= 0;
 }
 
   // Gets the button text depending on the role of the form

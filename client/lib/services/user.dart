@@ -15,7 +15,7 @@ Future<Map<String, dynamic>> createUser(User user) async {
   };
   http.Response response;
   try {
-    response = await http.post('${constants.API}/user',
+    response = await http.post('${constants.API}/users',
       headers: headers, body: jsonEncode(json));
   } catch(_) {
     print(_);
