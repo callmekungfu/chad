@@ -18,7 +18,6 @@ class Service {
     return deleteService(this);
   }
 
-
   static Future<List<Service>> getServiceList() async {
     return getServices();
   }

@@ -5,6 +5,7 @@ import 'package:client/screens/login/login.dart';
 import 'package:client/screens/admin/admin-screen.dart';
 import 'package:client/screens/serviceBrowser/service-browser-screen.dart';
 import 'package:client/screens/adminHubView/adminHubView.dart';
+import 'package:client/screens/providerProfile/providerProfile.dart';
 
 void main() {
   runApp(ChadApp());
@@ -23,6 +24,7 @@ class ChadApp extends StatelessWidget {
           "/admin/service": (BuildContext context) => ServiceBrowserScreen(),
           "/admin": (BuildContext context) => AdminHubView(),
           "/employee": (BuildContext context, ) => EmployeeHubView(),
+          "/profile": (BuildContext context) => ProfileScreen(),
         },
       );
   }
