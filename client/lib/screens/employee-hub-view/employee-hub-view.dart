@@ -1,6 +1,7 @@
 import 'package:client/screens/employee-hub-view/components/body.dart';
-import 'package:client/screens/home/components/service-list.dart';
 import 'package:flutter/material.dart';
+
+import 'components/service-list.dart';
 
 
 class EmployeeHubView extends StatefulWidget {

@@ -19,13 +19,11 @@ class _ServiceListState extends State<ServiceListWidget> {
     // reload
     setState(() {
       services = Service.getServiceList();
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder(
       future: services,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -43,8 +41,22 @@ class _ServiceListState extends State<ServiceListWidget> {
             itemBuilder: (BuildContext context, int i) {
               return ListTile(
                 title: Text(snapshot.data[i].name),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Role: "+snapshot.data[i].role),
+                    Text("Price: \$"+snapshot.data[i].price.toString()),
+                  ],
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    print('pressed');
+                  },
+                  icon: Icon(Icons.delete_forever),
+                ),
               );
             },
+            
             separatorBuilder: (BuildContext context, int index) =>
                   const Divider(),
           ),

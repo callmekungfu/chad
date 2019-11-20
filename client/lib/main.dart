@@ -1,5 +1,5 @@
+import 'package:client/screens/employee-hub-view/components/service-list.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
-import 'package:client/screens/home/components/service-list.dart';
 import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
 import 'package:client/screens/login/login.dart';

@@ -58,8 +58,8 @@ class _MyAppState extends State<Body> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                      'Welcome to CHAD',
-                      style: TextStyle(color: Colors.grey),
+                      'Licensed',
+                      style: TextStyle(color: Colors.green),
                     ),
                     margin: EdgeInsets.only(bottom: 10),
                   ),
@@ -253,6 +253,9 @@ class _MyAppState extends State<Body> {
   }
 
   setTime(TimeOfDay time, String date, bool start) {
+    if (time == null) {
+      return;
+    }
     var current = this.availability;
     var val = current[date];
     if (start) {
