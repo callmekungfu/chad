@@ -6,13 +6,16 @@ class Body extends StatefulWidget {
   @override
   _HomeMaterialState createState() => _HomeMaterialState();
 
-  final User user;
+  final String user;
   Body({Key key, @required this.user}) : super(key: key);
 }
 
 class _HomeMaterialState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   ProviderProfile _profile = new ProviderProfile(liscensed: false);
+  final String user;
+
+  _HomeMaterialState({@required this.user});
 
   // Form Text Field Controls
   final controls = {
@@ -29,7 +32,7 @@ class _HomeMaterialState extends State<Body> {
   }
 
   void fetchProviderProfile() async{
-    var existingProviderProfile = await ProviderProfile.getProviderProfile(id);
+    var existingProviderProfile = await ProviderProfile.getProviderProfile(user);
     setState((){
       if (existingProviderProfile != null) {
         _profile = existingProviderProfile;

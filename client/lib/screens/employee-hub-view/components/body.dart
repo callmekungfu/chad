@@ -1,3 +1,4 @@
+import 'package:client/models/providerProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/service.dart';
 
@@ -21,6 +22,9 @@ class _MyAppState extends State<Body> {
     refreshAvailabilities();
   }
 
+  void refreshProfile() {
+    // var profile = ProviderProfile.getProviderProfile('wangyonglin1999@gmail.com');
+  }
   void refreshAvailabilities() {
     // reload
     setState(() {
@@ -41,7 +45,7 @@ class _MyAppState extends State<Body> {
     return FutureBuilder<List<Service>>(
         future: profile,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data != null) {
+          if (snapshot.data != null) { // TODO INVERT THIS THING
             return Container(
                 child: Center(
               child: Text("Loading..."),
