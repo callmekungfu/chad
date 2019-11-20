@@ -216,3 +216,144 @@ Response(s)
 ``` json
 204 NOT FOUND
 ```
+
+### GET /providers
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "provider": [
+        {
+            "id": "f95MKFquyXPHjCPrqZpR",
+            "data": {
+                "isLiscened": true,
+                "description": "lorem ipsum",
+                "address": "test",
+                "phoneNumber": "1234567890",
+                "company": "test",
+                "email": "test"
+            }
+        },
+        {
+            "id": "hWKko2UakIIGKr0qj3gl",
+            "data": {
+                "description": "lorem ipsum",
+                "address": "test2",
+                "phoneNumber": "1231231230",
+                "company": "test2",
+                "email": "test2",
+                "isLiscened": false
+            }
+        }
+    ]
+}
+```
+
+### GET /providers/:id
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "provider": {
+        "id": "hWKko2UakIIGKr0qj3gl",
+        "data": {
+            "description": "lorem ipsum",
+            "address": "test2",
+            "phoneNumber": "1231231230",
+            "company": "test2",
+            "email": "test2",
+            "isLiscened": false
+        }
+    }
+}
+```
+
+``` json
+204 NOT FOUND
+```
+
+### POST /providers
+
+Body
+
+``` json
+{
+    "email": "test2",
+    "phoneNumber": "1231231230",
+    "address": "test2",
+    "company": "test2",
+    "description": "lorem ipsum",
+    "isLiscened": false
+}
+```
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "provider": {
+        "id": "hWKko2UakIIGKr0qj3gl",
+        "data": {
+            "isLiscened": false,
+            "description": "lorem ipsum",
+            "address": "test2",
+            "phoneNumber": "1231231230",
+            "company": "test2",
+            "email": "test2"
+        }
+    }
+}
+```
+
+``` json
+{
+    "isSuccess": false,
+    "msg": "invalid body"
+}
+```
+
+### DELETE /providers/:id
+
+Response(s)
+
+``` json
+204 NOT FOUND
+```
+
+### PUT /providers/:id
+
+Body
+
+``` json
+{
+    "email": "test2", // optional
+    "phoneNumber": "1231231230", // optional
+    "address": "test2", // opotional
+    "company": "test2", // optional
+    "description": "lorem ipsum", // optional
+    "isLiscened": false // optional
+}
+```
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "provider": {
+        "id": "hWKko2UakIIGKr0qj3gl",
+        "service": {
+            "phoneNumber": "1231231230" // return modified fields
+        }
+    }
+}
+```
+
+``` json
+204 NOT FOUND
+```

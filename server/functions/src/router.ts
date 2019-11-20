@@ -2,6 +2,7 @@ import { Application } from 'express';
 import * as Auth from "./auth/authenticated";
 import * as Services from './controllers/services';
 import * as Users from './controllers/user';
+import * as Providers from './controllers/provider';
 
 export function routerConfig(app: Application) {
 
@@ -31,5 +32,25 @@ export function routerConfig(app: Application) {
 
   app.put('/services/:id',
     Services.updateOne
+  );
+
+  app.post('/providers',
+    Providers.insertOne
+  );
+
+  app.get('/providers',
+    Providers.findAll
+  );
+
+  app.get('/providers/:id',
+    Providers.findOne
+  );
+
+  app.delete('/providers/:id',
+    Providers.deleteOne
+  );
+
+  app.put('/providers/:id',
+    Providers.updateOne
   );
 }
