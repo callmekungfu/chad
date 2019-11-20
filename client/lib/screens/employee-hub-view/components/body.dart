@@ -7,38 +7,48 @@ class Body extends StatefulWidget {
 }
 
 class _MyAppState extends State<Body> {
-  Future<List<Service>> service;
+  Future<dynamic> profile;
+  Map<String, String> availability;
 
   @override
   void initState() {
     super.initState();
-    refreshList();
+    refreshAvailabilities();
   }
 
   @override
   void didUpdateWidget(Widget old) {
-    refreshList();
+    refreshAvailabilities();
   }
 
-  void refreshList() {
+  void refreshAvailabilities() {
     // reload
     setState(() {
-      service = Service.getServiceList();
+      availability = {
+        'monday': '11:30 - 12:30',
+        'tuesday': 'closed',
+        'wednesday': '11:30 - 12:30',
+        'thursday': '11:30 - 12:30',
+        'friday': 'closed',
+        'saturday': '11:30 - 12:30',
+        'sunday': '11:30 - 12:30',
+      };
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Service>>(
-        future: service,
+        future: profile,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
+          if (snapshot.data != null) {
             return Container(
                 child: Center(
               child: Text("Loading..."),
             ));
           } else {
-            return Container(
+            return SingleChildScrollView(
+              child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -83,13 +93,25 @@ class _MyAppState extends State<Body> {
                         Container(
                           child: Text(
                             'Availability',
-                            style: TextStyle(color: Colors.grey, fontSize: 20),
+                            style: TextStyle(fontSize: 20),
                           ),
                           margin: EdgeInsets.only(bottom: 10),
                         ),
-                        Container(child: Table(
-                          children: generateTable(),
-                        ))
+                        Container(
+                          child: Text('Click on the day to toggle open and closed, then set the start and end time.', 
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey
+                            ),
+                          ),
+                          margin: EdgeInsets.only(bottom: 10),
+                        ),
+                        Container(
+                          child: Table(
+                            children: generateTableEditable(),
+                          )
+                        )
                       ],
                     ),
                     margin: EdgeInsets.only(bottom: 40),
@@ -97,20 +119,6 @@ class _MyAppState extends State<Body> {
                   Container(
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          child: RaisedButton.icon(
-                            color: Colors.blue,
-                            textColor: Colors.white,
-                            icon: Icon(Icons.calendar_today),
-                            label: Text('Modify Availabilities'),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => popupBuilder(context)
-                            );
-                            },
-                          ),
-                        ),
                         Container(
                           child: RaisedButton.icon(
                             color: Colors.blueAccent,
@@ -129,56 +137,15 @@ class _MyAppState extends State<Body> {
               ),
               alignment: Alignment.topCenter,
               padding: EdgeInsets.all(40)
+            )
             );
           }
         });
   }
 
-  generateTable() {
-    var data = {
-      'monday': '11:30 - 12:30',
-      'tuesday': 'closed',
-      'wednesday': '11:30 - 12:30',
-      'thursday': '11:30 - 12:30',
-      'friday': 'closed',
-      'saturday': '11:30 - 12:30',
-      'sunday': '11:30 - 12:30',
-    };
-    List<TableRow> rows = [];
-
-    for (final key in data.keys) {
-      rows.add(
-        TableRow(children: [
-          TableCell(
-            child: Padding(padding: EdgeInsets.all(5), child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Text(key)],
-            )),
-          ),
-          TableCell(
-            child: Padding(padding: EdgeInsets.all(5), child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Text(data[key])],
-            )),
-          )
-        ])
-      );
-    }
-    return rows;
-  }
-
   generateTableEditable() {
-    var data = {
-      'monday': '11:30 - 12:30',
-      'tuesday': 'closed',
-      'wednesday': '11:30 - 12:30',
-      'thursday': '11:30 - 12:30',
-      'friday': 'closed',
-      'saturday': '11:30 - 12:30',
-      'sunday': '11:30 - 12:30',
-    };
+    var data = this.availability;
     List<TableRow> rows = [];
-
     for (final key in data.keys) {
       rows.add(
         TableRow(
@@ -188,11 +155,8 @@ class _MyAppState extends State<Body> {
               child: Padding(padding: EdgeInsets.all(0), child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[FlatButton(child: Text(capitalize(key),), onPressed: () {
-                  showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(DateTime.now()),
-                  );
+                children: <Widget>[FlatButton(child: Text(capitalize(key)), onPressed: () {
+                  toggleOpenClosed(key);
                 },)],
               )),
             ),
@@ -208,17 +172,20 @@ class _MyAppState extends State<Body> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  FlatButton(child: Text(startTime(data[key])), onPressed: () {
-                    showTimePicker(
+                  FlatButton(child: Text(startTime(data[key])), onPressed: () async {
+                    TimeOfDay time = await showTimePicker(
                       context: context,
-                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(startTime(data[key])))),
                     );
+                    setTime(time, key, true);
+                    print(timeStringBuilder(time.hour, time.minute));
                   },),
-                  FlatButton(child: Text(endTime(data[key])), onPressed: () {
-                    showTimePicker(
+                  FlatButton(child: Text(endTime(data[key])), onPressed: () async {
+                    TimeOfDay time = await showTimePicker(
                       context: context,
-                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(endTime(data[key])))),
                     );
+                    setTime(time, key, false);
                   },)
                 ],
               )),
@@ -252,32 +219,48 @@ class _MyAppState extends State<Body> {
     return combined.split(' - ')[1];
   }
 
+  formatDT(String time) {
+    return '2019-12-12 ' + time +':00';
+  }
+
   capitalize(String phrase) {
     return phrase[0].toUpperCase() + phrase.substring(1).toLowerCase();
   }
 
-  popupBuilder(BuildContext context) {
-    return AlertDialog(
-      title: Text('Modify Availabilities'),
-      content: SingleChildScrollView(child: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Text('Click on the day to toggle open and closed, then set the start and end time everyday'),
-              margin: EdgeInsets.only(bottom: 10),
-            ),
-            Table(
-              children: generateTableEditable(),
-            )
-          ],
-        ),
-      ),),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Close')
-        ),
-      ],
-    );
+  toggleOpenClosed(String date) {
+    var current = this.availability;
+    var val = current[date];
+    if (val == 'closed') {
+      current[date] = '09:00 - 17:00';
+    } else if (val != 'closed') {
+      current[date] = 'closed';
+    }
+    setState(() {
+      availability = current;
+    });
+  }
+
+  timeStringBuilder(int hour, int minute) {
+    String h, m;
+
+    h = hour < 10 ? '0' + hour.toString() : hour.toString();
+    m = minute < 10 ? '0' + minute.toString() : minute.toString();
+    return h + ':' + m;
+  }
+
+  setTime(TimeOfDay time, String date, bool start) {
+    var current = this.availability;
+    var val = current[date];
+    if (start) {
+      var end = endTime(val);
+      current[date] = timeStringBuilder(time.hour, time.minute) + ' - ' + end;
+    } else {
+      var start = startTime(val);
+      current[date] = start + ' - ' + timeStringBuilder(time.hour, time.minute);
+    }
+
+    setState(() {
+      availability = current;
+    });
   }
 }
