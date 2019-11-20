@@ -35,18 +35,20 @@ class _MyAppState extends State<Body> {
     return new Column(
       children: <Widget>[
         new TextFormField(
-            decoration: new InputDecoration(hintText: 'Username'),
+            decoration: new InputDecoration(labelText: 'Email'),
             keyboardType: TextInputType.emailAddress,
             maxLength: 32,
             validator: validateEmail,
             onSaved: (val) => setState(() => _credential.userName = val)),
         new TextFormField(
-            decoration: new InputDecoration(hintText: 'Password'),
+            decoration: new InputDecoration(labelText: 'Password'),
             maxLength: 32,
+            obscureText: true,
             validator: validatePassword,
             onSaved: (val) => setState(() => _credential.password = val)),
-        new SizedBox(height: 15.0),
-        new RaisedButton(
+        new SizedBox(height: 25.0),
+        new SizedBox(
+          child: new RaisedButton(
             onPressed: () async {
               final form = _key.currentState;
               if (form.validate()) {
@@ -54,12 +56,12 @@ class _MyAppState extends State<Body> {
                 _showPending(context);
                 Map<String, dynamic> response = await _credential.login();
                 if (response['statusCode'] == 200) {
-                  Role role = convertToRole(response['role']);
+                  Role role = convertToRole(response['user']['role']);
                   if (role != null) {
                     _showSuccess(context);
                     User user = new User();
-                    user.firstName = response['first_name'];
-                    user.lastName = response['last_name'];
+                    user.firstName = response['user']['firstName'];
+                    user.lastName = response['user']['lastName'];
                     user.role = role;
                     if (user.role == Role.ADMINISTRATOR) {
                       Navigator.push(
@@ -82,7 +84,12 @@ class _MyAppState extends State<Body> {
                 }
               }
             },
-            child: Text('Submit')),
+            color: Colors.blue,
+            child: Text('Login', style: TextStyle(color: Colors.white))
+          ),
+          width: double.infinity,
+          height: 45,
+        )
       ],
     );
   }

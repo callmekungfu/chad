@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  build:
+    docker: 
+      - image: kuronekomichael/flutter:jenkins-slave
+    steps:
+      - checkout
+      - run:
+          name: 'Running Flutter Test'
+          command: |
+            cd client
+            flutter upgrade
+            dartanalyzer .
+            flutter test
