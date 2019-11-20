@@ -1,30 +1,41 @@
 ```plantuml
 @startuml Account Management
-    skinparam backgroundColor Snow
+skinparam backgroundColor Snow
 
-    abstract class User{
-        -firstName
-        -lastName
-        -userName
-        -password
-        -role
-    }
-
-    class Administrator extends User{
-
-    }
-
-    class Employee extends User{
-
-    }
-    class Patient extends User{
-
-    }
-
-    class Service{
+  abstract class User{
+      -firstName
+      -lastName
+      -userName
+      -password
       -role
-      -price
-      -name
-    }
+  }
+
+  class Administrator extends User{
+
+  }
+
+  class ServiceProvider extends User{
+
+  }
+  class Client extends User{
+
+  }
+
+  class Service{
+    -role
+    -price
+    -name
+  }
+
+  class ServiceProviderProfile{
+    -companyName
+    -address
+    -phoneNumber
+    -generalDescription
+    -licensed
+  }
+
+  ServiceProvider "1" -- "1" ServiceProviderProfile: > has a
+  ServiceProvider "1" -- "*" Service: > provides
 @enduml
 ```
