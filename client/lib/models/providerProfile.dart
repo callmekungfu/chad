@@ -1,6 +1,6 @@
-import 'package:client/services/profile.dart';
+import 'package:client/services/providerProfile.dart';
 
-class Profile {
+class ProviderProfile {
   String email;
   String companyName;
   String phoneNumber;
@@ -8,7 +8,7 @@ class Profile {
   String description;
   bool liscensed = false;
 
-  Profile(
+  ProviderProfile(
       {String email,
       String companyName,
       String phoneNumber,
@@ -23,10 +23,10 @@ class Profile {
   }
 
   Future<Map<String, dynamic>> create() async {
-    return createProfile(this);
+    return createProviderProfile(this);
   }
 
-  static Future<Profile> getUserProfile(String email) async {
-    return getProfile(email);
+  static Future<ProviderProfile> getProviderProfile(String email) async {
+    return getProviderProfile(email);
   }
 }

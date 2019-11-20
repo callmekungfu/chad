@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/models/profile.dart';
+import 'package:client/models/providerProfile.dart';
 import 'package:client/models/user.dart';
 
 class Body extends StatefulWidget {
@@ -12,7 +12,7 @@ class Body extends StatefulWidget {
 
 class _HomeMaterialState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  Profile _profile = new Profile(liscensed: false);
+  ProviderProfile _profile = new ProviderProfile(liscensed: false);
 
   // Form Text Field Controls
   final controls = {
@@ -24,22 +24,20 @@ class _HomeMaterialState extends State<Body> {
 
   @override
   void initState(){
-    fetchProfile();
+    fetchProviderProfile();
     super.initState();
   }
 
-  void fetchProfile() async{
-    var existingProfile = await Profile.getUserProfile(widget.user.userName);
+  void fetchProviderProfile() async{
+    var existingProviderProfile = await ProviderProfile.getProviderProfile(id);
     setState((){
-      if (existingProfile != null) {
-        _profile = existingProfile;
+      if (existingProviderProfile != null) {
+        _profile = existingProviderProfile;
         controls['companyName'].text = _profile.companyName;
         controls['phoneNumber'].text = _profile.phoneNumber;
         controls['address'].text = _profile.address;
         controls['description'].text = _profile.description;
-      } else if (widget.user != null) {
-        _profile.email = widget.user.userName;
-      }
+      } 
     });
   }
 
@@ -122,14 +120,14 @@ class _HomeMaterialState extends State<Body> {
 
   _showPending(BuildContext context) {
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Saving Profile'),
+      content: Text('Saving ProviderProfile'),
       backgroundColor: Colors.orange,
     ));
   }
 
   _showSuccess(BuildContext context) {
     Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Profile Saved'),
+      content: Text('ProviderProfile Saved'),
       backgroundColor: Colors.green,
     ));
   }

@@ -1,6 +1,5 @@
-import 'package:client/models/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:client/screens/profile/components/body.dart';
+import 'package:client/screens/providerProfile/components/body.dart';
 import 'package:client/models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
