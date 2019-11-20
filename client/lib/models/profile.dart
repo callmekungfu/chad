@@ -1,7 +1,7 @@
 import 'package:client/services/profile.dart';
 
 class Profile {
-  String userId;
+  String email;
   String companyName;
   String phoneNumber;
   String address;
@@ -9,7 +9,7 @@ class Profile {
   bool liscensed = false;
 
   Profile(
-      {String userId,
+      {String email,
       String companyName,
       String phoneNumber,
       String address,
@@ -26,7 +26,7 @@ class Profile {
     return createProfile(this);
   }
 
-  static Future<Profile> getUserProfile(String userId) async {
-    return getProfile(userId);
+  static Future<Profile> getUserProfile(String email) async {
+    return getProfile(email);
   }
 }

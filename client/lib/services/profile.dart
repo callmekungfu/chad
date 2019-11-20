@@ -7,7 +7,7 @@ import 'package:client/constants.dart' as constants;
 Future<Map<String, dynamic>> createProfile(Profile profile) async {
   Map<String, String> headers = {"Content-type": "application/json"};
   Map<String, dynamic> json = {
-    "userId": profile.userId,
+    "email": profile.email,
     "company": profile.companyName,
     "phoneNumber": profile.phoneNumber,
     "address": profile.address,
@@ -27,10 +27,10 @@ Future<Map<String, dynamic>> createProfile(Profile profile) async {
   return output;
 }
 
-Future<Profile> getProfile(String id) async {
+Future<Profile> getProfile(String email) async {
   http.Response response;
   try {
-    response = await http.get("${constants.API}/providers/$id");
+    response = await http.get("${constants.API}/providers/$email");
     print(response);
   } catch (_) {
     print(_);
@@ -42,7 +42,7 @@ Future<Profile> getProfile(String id) async {
   Profile profile;
   var data = jsonData['data'];
 
-  profile.userId = data['userId'];
+  profile.email = data['email'];
   profile.companyName = data['company'] != null ? data['company'] : '';
   profile.phoneNumber = data['phoneNumber'] != null ? data['phoneNumber'] : '';
   profile.address = data['address'] != null ? data['address'] : '';

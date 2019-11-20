@@ -29,7 +29,7 @@ class _HomeMaterialState extends State<Body> {
   }
 
   void fetchProfile() async{
-    var existingProfile = await Profile.getUserProfile(widget.user.id);
+    var existingProfile = await Profile.getUserProfile(widget.user.userName);
     setState((){
       if (existingProfile != null) {
         _profile = existingProfile;
@@ -38,7 +38,7 @@ class _HomeMaterialState extends State<Body> {
         controls['address'].text = _profile.address;
         controls['description'].text = _profile.description;
       } else if (widget.user != null) {
-        _profile.userId = widget.user.id;
+        _profile.email = widget.user.userName;
       }
     });
   }
