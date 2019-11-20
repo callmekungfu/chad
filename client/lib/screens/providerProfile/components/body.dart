@@ -6,8 +6,8 @@ class Body extends StatefulWidget {
   @override
   _HomeMaterialState createState() => _HomeMaterialState();
 
-  final User user;
-  Body({Key key, @required this.user}) : super(key: key);
+  final String id;
+  Body({Key key, @required this.id}) : super(key: key);
 }
 
 class _HomeMaterialState extends State<Body> {
@@ -23,22 +23,25 @@ class _HomeMaterialState extends State<Body> {
   };
 
   @override
-  void initState(){
+  void initState() {
     fetchProviderProfile();
     super.initState();
   }
 
-  void fetchProviderProfile() async{
-    var existingProviderProfile = await ProviderProfile.getProviderProfile(id);
-    setState((){
-      if (existingProviderProfile != null) {
-        _profile = existingProviderProfile;
-        controls['companyName'].text = _profile.companyName;
-        controls['phoneNumber'].text = _profile.phoneNumber;
-        controls['address'].text = _profile.address;
-        controls['description'].text = _profile.description;
-      } 
-    });
+  void fetchProviderProfile() async {
+    if (widget.id != null) {
+      var existingProviderProfile =
+          await ProviderProfile.getProviderProfile(widget.id);
+      setState(() {
+        if (existingProviderProfile != null) {
+          _profile = existingProviderProfile;
+          controls['companyName'].text = _profile.companyName;
+          controls['phoneNumber'].text = _profile.phoneNumber;
+          controls['address'].text = _profile.address;
+          controls['description'].text = _profile.description;
+        }
+      });
+    }
   }
 
   @override

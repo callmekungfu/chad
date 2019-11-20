@@ -26,7 +26,7 @@ class ProviderProfile {
     return createProviderProfile(this);
   }
 
-  static Future<ProviderProfile> getProviderProfile(String email) async {
-    return getProviderProfile(email);
+  static Future<ProviderProfile> getProviderProfile(String id) async {
+    return getProviderProfile(id);
   }
 }

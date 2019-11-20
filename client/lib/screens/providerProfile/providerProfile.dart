@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:client/screens/providerProfile/components/body.dart';
-import 'package:client/models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final User user;
+  final String id;
 
-  ProfileScreen({Key key, this.user}) : super(key: key);
+  ProfileScreen({Key key, this.id}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -13,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Your Profile"),
       ),
-      body: Body(),
+      body: Body(id:id),
     );
   }
 }
