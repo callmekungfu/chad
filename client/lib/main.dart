@@ -22,7 +22,7 @@ class ChadApp extends StatelessWidget {
           "/admin/user": (BuildContext context) => AdminScreen(),
           "/admin/service": (BuildContext context) => ServiceBrowserScreen(),
           "/admin": (BuildContext context) => AdminHubView(),
-          "/employee": (BuildContext context) => EmployeeHubView(),
+          "/employee": (BuildContext context, ) => EmployeeHubView(),
         },
       );
   }
