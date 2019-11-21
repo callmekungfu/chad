@@ -48,27 +48,27 @@ class _MyAppState extends State<Body> {
                 return ListTile(
                   title: Text(snapshot.data[index].name),
                   trailing: Container(
-                    width: 100.0,
-                    child: Row(children: <Widget>[
-                    IconButton(
-                    onPressed: (){
-                      Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm(service:snapshot.data[index]))); //TODO pass service object to editor screen snapshot.data[index]
-                    },
-                    icon: Icon(Icons.edit),
-                  ),
-                  IconButton(
-                    onPressed: () async{
-                       bool result = await snapshot.data[index].delete();
-                       if(result){
-                         refreshList();
-                       }else{
-                         print("error");
-                       }
-                    },
-                    icon: Icon(Icons.delete),
-                  ),
-                  ],),
+                      width: 100.0,
+                      child: Row(children: <Widget>[
+                      IconButton(
+                      onPressed: (){
+                        Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm(service:snapshot.data[index]))); //TODO pass service object to editor screen snapshot.data[index]
+                      },
+                      icon: Icon(Icons.edit),
                     ),
+                    IconButton(
+                      onPressed: () async{
+                        bool result = await snapshot.data[index].delete();
+                        if(result){
+                          refreshList();
+                        }else{
+                          print("error");
+                        }
+                      },
+                      icon: Icon(Icons.delete),
+                    ),
+                    ],),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

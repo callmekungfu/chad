@@ -1,9 +1,12 @@
+import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
+import 'package:client/screens/providerProfile/providerProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/user.dart';
 
 class Body extends StatelessWidget {
   final User user;
   Body({Key key, @required this.user}) : super(key: key);
+
 
   String promptBuilder(User user) {
     return 'Welcome ${user.firstName} ${user.lastName}, you are logged in as ${user.role.toString().split('.').last.toLowerCase()}';
