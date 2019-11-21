@@ -121,28 +121,28 @@ class _HomeMaterialState extends State<Body> {
                               if (widget.id == null) {
                                 response = await _profile.create();
                                 if (response['statusCode'] == 201) {
-                                  _showSuccess(context);
+                                  user.provider = response['provider']['id'];
+                                  Navigator.push(context, 
+                                    MaterialPageRoute(
+                                      builder: (context) => EmployeeHubView(user: user,)
+                                    )
+                                  );
                                 } else {
                                   _showFailure(context, response['msg']);
                                 }
-                                Navigator.push(context, 
-                                  MaterialPageRoute(
-                                    builder: (context) => EmployeeHubView(user: user,)
-                                  )
-                                );
                               } else {
                                 _profile.id = widget.id;
                                 response = await _profile.update();
                                 if (response['statusCode'] == 200) {
-                                  _showSuccess(context);
+                                  Navigator.push(context, 
+                                    MaterialPageRoute(
+                                      builder: (context) => EmployeeHubView(user: user,)
+                                    )
+                                  );
                                 } else {
                                   _showFailure(context, response['msg']);
                                 }
-                                Navigator.push(context, 
-                                  MaterialPageRoute(
-                                    builder: (context) => EmployeeHubView(user: user,)
-                                  )
-                                );
+                                
                               }
                             }
                           },
