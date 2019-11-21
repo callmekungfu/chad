@@ -117,10 +117,18 @@ class _ServiceListState extends State<ServiceListWidget> {
       trailing: IconButton(
         onPressed: () {
           data.addToUser(user);
+          _showSuccess(context);
         },
         icon: Icon(Icons.add),
       ),
     );
+  }
+
+  _showSuccess(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Service Successfully Added'),
+      backgroundColor: Colors.green,
+    ));
   }
 
   generateShowMyListTile(Service data, User user) {
