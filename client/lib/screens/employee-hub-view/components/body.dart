@@ -91,7 +91,7 @@ class _MyAppState extends State<Body> {
                           margin: EdgeInsets.only(bottom: 10),
                         ),
                         Container(
-                          child: Text('Click on the day to toggle open and closed, then set the start and end time.', 
+                          child: Text('Click on the day to toggle open and closed, then set the start and end time.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 10,
@@ -173,14 +173,30 @@ class _MyAppState extends State<Body> {
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(startTime(data[key])))),
                     );
-                    setTime(time, key, true, profile);
+                    if (time != null) {
+                      int startTimeNumber = int.parse(time.toString().replaceAll(RegExp(r'[^0-9]'), ''));
+                      int endTimeNumber = int.parse(endTime(data[key]).replaceAll(RegExp(r'[^0-9]'), ''));
+                      if (startTimeNumber >= endTimeNumber) {
+                        _showFailure(context, 'Invalid time');
+                      } else {
+                        setTime(time, key, true, profile);
+                      }
+                    }
                   },),
                   FlatButton(child: Text(endTime(data[key])), onPressed: () async {
                     TimeOfDay time = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(endTime(data[key])))),
                     );
-                    setTime(time, key, false, profile);
+                    if (time != null) {
+                      int endTimeNumber = int.parse(time.toString().replaceAll(RegExp(r'[^0-9]'), ''));
+                      int startTimeNumber = int.parse(startTime(data[key]).replaceAll(RegExp(r'[^0-9]'), ''));
+                      if (startTimeNumber >= endTimeNumber) {
+                        _showFailure(context, 'Invalid time');
+                      } else {
+                        setTime(time, key, false, profile);
+                      }
+                    }
                   },)
                 ],
               )),
@@ -201,7 +217,7 @@ class _MyAppState extends State<Body> {
           ])
         );
       }
-      
+
     }
     return rows;
   }
@@ -245,7 +261,7 @@ class _MyAppState extends State<Body> {
   }
 
   generateStatusTag(bool isLicensed) {
-    return isLicensed ? Text('Licensed', style: TextStyle(color: Colors.green),) 
+    return isLicensed ? Text('Licensed', style: TextStyle(color: Colors.green),)
                       : Text('Not Licensed', style: TextStyle(color: Colors.red),);
   }
 
@@ -267,5 +283,26 @@ class _MyAppState extends State<Body> {
       profile.availabilities.fromMap(current);
       profile.update();
     });
+  }
+
+  _showPending(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Attempting to login'),
+      backgroundColor: Colors.orange,
+    ));
+  }
+
+  _showSuccess(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Login successful'),
+      backgroundColor: Colors.green,
+    ));
+  }
+
+  _showFailure(BuildContext context, String message) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
   }
 }
