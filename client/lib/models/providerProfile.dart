@@ -1,3 +1,4 @@
+import 'package:client/models/service.dart';
 import 'package:client/services/providerProfile.dart';
 import 'package:client/services/providerProfile.dart' as service;
 
@@ -10,6 +11,7 @@ class ProviderProfile {
   String id;
   bool liscensed = false;
   Availabilities availabilities = Availabilities();
+  List<Service> services = [];
 
   ProviderProfile(
       {String email,

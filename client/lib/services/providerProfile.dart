@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:client/models/providerProfile.dart';
+import 'package:client/models/service.dart';
 import 'package:http/http.dart' as http;
 import 'package:client/constants.dart' as constants;
 
@@ -77,5 +78,22 @@ Future<ProviderProfile> getProviderProfile(String id) async {
   _profile.availabilities.friday = data['friday'];
   _profile.availabilities.saturday = data['saturday'];
   _profile.availabilities.sunday = data['sunday'];
+
+  List<Service> services = [];
+  
+  for (var s in jsonData['provider']['services']) {
+      var data = s['data'];
+      if(data['name']!=null){
+        var service = Service(
+        id: s['id'], 
+        name: data['name'],
+        role: (data['role']!=null)?data['role']:'',
+        price: (data['price']!=null)?data['price'].toDouble():0.0,
+      );
+      services.add(service);
+    }
+  }
+  _profile.services = services;
+
   return _profile;
 }

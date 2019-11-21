@@ -17,6 +17,7 @@ class EmployeeHubView extends StatefulWidget {
 class _EmployeeHubViewState extends State<EmployeeHubView> {
   int _selectedIndex = 0;
   User user;
+  bool showAllServices = false;
 
   _EmployeeHubViewState({this.user});
 
@@ -26,7 +27,7 @@ class _EmployeeHubViewState extends State<EmployeeHubView> {
       appBar: AppBar(
         title: Text("Service Provider Hub"),
         ),
-        body: this._selectedIndex == 0 ? Body(user: user,) : ServiceListWidget(),
+        body: this._selectedIndex == 0 ? Body(user: user,) : ServiceListWidget(user: user, showAll: showAllServices,),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -44,7 +45,9 @@ class _EmployeeHubViewState extends State<EmployeeHubView> {
         ),
         floatingActionButton: this._selectedIndex == 1 ? FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm()));
+            setState(() {
+              showAllServices = !showAllServices;
+            });
           },
           child: Icon(Icons.add),
         ) : null,

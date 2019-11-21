@@ -1,3 +1,4 @@
+import 'package:client/models/user.dart';
 import 'package:client/services/service.dart';
 
 class Service {
@@ -12,6 +13,14 @@ class Service {
 
   Future<Map<String, dynamic>> update() async {
     return editService(this);
+  }
+
+  Future<bool> addToUser(User user) async {
+    return addServiceToUser(this, user);
+  }
+
+  Future<bool> removeFromUser(User user) async {
+    return removeServiceToUser(this, user);
   }
   
   Future<bool> delete() async {
