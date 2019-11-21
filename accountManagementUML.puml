@@ -37,6 +37,6 @@ skinparam backgroundColor HotPink
     }
 
     ServiceProvider "1" -- "1" ProviderProfile: > has a
-    ServiceProvider "1" -- "*" Service: > provides a
+    ServiceProviderProfile "1" -- "*" Service: > provides a
 @enduml
 ```
