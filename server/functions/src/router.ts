@@ -53,4 +53,12 @@ export function routerConfig(app: Application) {
   app.put('/providers/:id',
     Providers.updateOne
   );
+
+  app.post('/providers/:providerId/services',
+    Providers.addService
+  );
+
+  app.delete('/providers/:providerId/services/:serviceId',
+    Providers.deleteService
+  );
 }

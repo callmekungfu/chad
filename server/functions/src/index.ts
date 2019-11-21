@@ -27,5 +27,4 @@ app.get('*', (req, res) => {
 });
 
 export const api = functions.https.onRequest(main);
-
 export default db;

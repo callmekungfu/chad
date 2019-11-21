@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as Services from '../services/services';
-import { Service } from '../models/service';
 import { validateJSON } from '../lib/validator';
 import { postServiceSchema, putServiceSchema } from '../lib/schemas/index';
 
@@ -66,13 +65,7 @@ export async function insertOne(req: express.Request, res: express.Response) {
         msg: 'invalid body'
       });
     } else {
-      const { name, role, price } = req.body;
-      const service: Service = {
-        name,
-        role,
-        price
-      }
-      const serviceInsert = await Services.insertOne(service);
+      const serviceInsert = await Services.insertOne(req.body);
       const serviceResult = await serviceInsert.get();
       return res.status(201).json({
         isSuccess: true,

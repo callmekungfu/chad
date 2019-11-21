@@ -259,15 +259,33 @@ Response(s)
 {
     "isSuccess": true,
     "provider": {
-        "id": "hWKko2UakIIGKr0qj3gl",
+        "id": "xxtV5g1dlVXYmeCc0HaA",
         "data": {
             "description": "lorem ipsum",
             "address": "test2",
             "phoneNumber": "1231231230",
             "company": "test2",
-            "email": "test2",
-            "isLiscened": false
-        }
+            "email": "wangyonglin1999@gmail.com",
+            "isLiscened": true
+        },
+        "services": [
+            {
+                "id": "57VLDH0UcyQrhYBpCSmc",
+                "data": {
+                    "name": "Yonglin Wang",
+                    "price": 0.01,
+                    "role": "Hackerman"
+                }
+            },
+            {
+                "id": "BQsRB0RpMoA9qEWDSwCz",
+                "data": {
+                    "price": 65767,
+                    "role": "yonglin",
+                    "name": "THAI MASSAGE"
+                }
+            }
+        ]
     }
 }
 ```
