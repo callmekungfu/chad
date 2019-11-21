@@ -17,7 +17,7 @@ Future<Map<String, dynamic>> createProviderProfile(ProviderProfile _profile) asy
   };
   http.Response response;
   try {
-    response = await http.post('${constants.DEV_API}/providers',
+    response = await http.post('${constants.API}/providers',
         headers: headers, body: jsonEncode(json));
   } catch (_) {
     print(_);
@@ -40,7 +40,7 @@ Future<Map<String, dynamic>> updateProviderProfile(ProviderProfile _profile) asy
   json.addAll(_profile.availabilities.toMap());
   http.Response response;
   try {
-    response = await http.put('${constants.DEV_API}/providers/${_profile.id}',
+    response = await http.put('${constants.API}/providers/${_profile.id}',
         headers: headers, body: jsonEncode(json));
   } catch (_) {
     print(_);
@@ -54,7 +54,7 @@ Future<Map<String, dynamic>> updateProviderProfile(ProviderProfile _profile) asy
 Future<ProviderProfile> getProviderProfile(String id) async {
   http.Response response;
   try {
-    response = await http.get("${constants.DEV_API}/providers/$id");
+    response = await http.get("${constants.API}/providers/$id");
     print(response);
   } catch (_) {
     print(_);
