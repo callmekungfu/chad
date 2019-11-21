@@ -9,6 +9,7 @@ class ProviderProfile {
   String description;
   String id;
   bool liscensed = false;
+  Availabilities availabilities = Availabilities();
 
   ProviderProfile(
       {String email,
@@ -34,5 +35,37 @@ class ProviderProfile {
 
   static Future<ProviderProfile> getProviderProfile(String id) async {
     return service.getProviderProfile(id);
+  }
+}
+
+class Availabilities {
+  String monday;
+  String tuesday;
+  String wednesday;
+  String thursday;
+  String friday;
+  String saturday;
+  String sunday;
+
+  Map<String, String> toMap() {
+    return {
+      'monday': monday,
+      'tuesday': tuesday,
+      'wednesday': wednesday,
+      'thursday': thursday,
+      'friday': friday,
+      'saturday': saturday,
+      'sunday': sunday,
+    };
+  }
+
+  void fromMap(Map<String, String> map) {
+    this.monday = map['monday'];
+    this.tuesday = map['tuesday'];
+    this.wednesday = map['wednesday'];
+    this.thursday = map['thursday'];
+    this.friday = map['friday'];
+    this.saturday = map['saturday'];
+    this.sunday = map['sunday'];
   }
 }

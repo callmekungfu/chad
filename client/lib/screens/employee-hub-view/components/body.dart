@@ -13,8 +13,7 @@ class Body extends StatefulWidget {
 }
 
 class _MyAppState extends State<Body> {
-  Future<dynamic> profile;
-  Map<String, String> availability;
+  Future<ProviderProfile> profile;
   User user;
 
   _MyAppState({@required this.user});
@@ -22,27 +21,12 @@ class _MyAppState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    refreshAvailabilities();
     refreshProfile();
   }
 
   void refreshProfile() async {
-    setState(() {
+    setState(() async {
       profile = ProviderProfile.getProviderProfile(user.provider);
-    });
-  }
-  void refreshAvailabilities() {
-    // reload
-    setState(() {
-      availability = {
-        'monday': '11:30 - 12:30',
-        'tuesday': 'closed',
-        'wednesday': '11:30 - 12:30',
-        'thursday': '11:30 - 12:30',
-        'friday': 'closed',
-        'saturday': '11:30 - 12:30',
-        'sunday': '11:30 - 12:30',
-      };
     });
   }
 
@@ -58,6 +42,7 @@ class _MyAppState extends State<Body> {
             ));
           } else {
             ProviderProfile data = snapshot.data;
+            data.id = user.provider;
             return SingleChildScrollView(
               child: Container(
               child: Column(
@@ -117,7 +102,7 @@ class _MyAppState extends State<Body> {
                         ),
                         Container(
                           child: Table(
-                            children: generateTableEditable(),
+                            children: generateTableEditable(data),
                           )
                         )
                       ],
@@ -154,8 +139,8 @@ class _MyAppState extends State<Body> {
         });
   }
 
-  generateTableEditable() {
-    var data = this.availability;
+  generateTableEditable(ProviderProfile profile) {
+    var data = profile.availabilities.toMap();
     List<TableRow> rows = [];
     for (final key in data.keys) {
       rows.add(
@@ -167,7 +152,7 @@ class _MyAppState extends State<Body> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[FlatButton(child: Text(capitalize(key)), onPressed: () {
-                  toggleOpenClosed(key);
+                  toggleOpenClosed(key, profile);
                 },)],
               )),
             ),
@@ -188,14 +173,14 @@ class _MyAppState extends State<Body> {
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(startTime(data[key])))),
                     );
-                    setTime(time, key, true);
+                    setTime(time, key, true, profile);
                   },),
                   FlatButton(child: Text(endTime(data[key])), onPressed: () async {
                     TimeOfDay time = await showTimePicker(
                       context: context,
                       initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(endTime(data[key])))),
                     );
-                    setTime(time, key, false);
+                    setTime(time, key, false, profile);
                   },)
                 ],
               )),
@@ -237,8 +222,8 @@ class _MyAppState extends State<Body> {
     return phrase[0].toUpperCase() + phrase.substring(1).toLowerCase();
   }
 
-  toggleOpenClosed(String date) {
-    var current = this.availability;
+  toggleOpenClosed(String date, ProviderProfile profile) {
+    var current = profile.availabilities.toMap();
     var val = current[date];
     if (val == 'closed') {
       current[date] = '09:00 - 17:00';
@@ -246,7 +231,8 @@ class _MyAppState extends State<Body> {
       current[date] = 'closed';
     }
     setState(() {
-      availability = current;
+      profile.availabilities.fromMap(current);
+      profile.update();
     });
   }
 
@@ -263,11 +249,11 @@ class _MyAppState extends State<Body> {
                       : Text('Not Licensed', style: TextStyle(color: Colors.red),);
   }
 
-  setTime(TimeOfDay time, String date, bool start) {
+  setTime(TimeOfDay time, String date, bool start, ProviderProfile profile) {
     if (time == null) {
       return;
     }
-    var current = this.availability;
+    var current = profile.availabilities.toMap();
     var val = current[date];
     if (start) {
       var end = endTime(val);
@@ -278,7 +264,8 @@ class _MyAppState extends State<Body> {
     }
 
     setState(() {
-      availability = current;
+      profile.availabilities.fromMap(current);
+      profile.update();
     });
   }
 }

@@ -111,7 +111,7 @@ class _MyAppState extends State<Body> {
                       _showFailure(context, "Client role error");
                     }
                   } else {
-                    _showFailure(context, response['message']);
+                    _showFailure(context, response['msg']);
                   }
                 }
               },
