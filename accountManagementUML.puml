@@ -1,6 +1,7 @@
 ```plantuml
 @startuml Account Management
-    skinparam backgroundColor Snow
+
+skinparam backgroundColor HotPink
 
     abstract class User{
         -firstName
@@ -14,10 +15,10 @@
 
     }
 
-    class Employee extends User{
+    class ServiceProvider extends User{
 
     }
-    class Patient extends User{
+    class Client extends User{
 
     }
 
@@ -26,5 +27,16 @@
       -price
       -name
     }
+
+    class ProviderProfile{
+      -companyName
+      -address
+      -phoneNumber
+      -generalDescription
+      -licensed
+    }
+
+    ServiceProvider "1" -- "1" ProviderProfile: > has a
+    ServiceProvider "1" -- "*" Service: > provides a
 @enduml
 ```
