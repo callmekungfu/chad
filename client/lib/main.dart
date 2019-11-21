@@ -2,6 +2,7 @@ import 'package:client/models/user.dart';
 import 'package:client/reducers.dart';
 import 'package:client/screens/employee-hub-view/components/service-list.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
+import 'package:client/screens/home/home.dart';
 import 'package:client/screens/service-management/service-management.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,8 @@ class ChadApp extends StatelessWidget {
           title: 'CHAD Clinic',
           initialRoute: '/',
           routes: <String, WidgetBuilder>{
-            "/": (BuildContext context) => LoginScreen(),
+            "/": (BuildContext context) => Home(),
+            "/login": (BuildContext context) => LoginScreen(),
             "/admin/service/form": (BuildContext context) => ServiceManagementForm(),
             "/admin/user": (BuildContext context) => AdminScreen(),
             "/admin/service": (BuildContext context) => ServiceBrowserScreen(),

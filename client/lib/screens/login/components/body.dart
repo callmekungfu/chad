@@ -27,12 +27,34 @@ class _MyAppState extends State<Body> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: new Container(
-        margin: new EdgeInsets.all(15.0),
-        child: new Form(
-          key: _key,
-          autovalidate: _validate,
-          child: FormUI(),
-        ),
+        margin: new EdgeInsets.only(top: 60, bottom: 15, right: 15, left: 15),
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: SizedBox(
+                child: Image(
+                  image: AssetImage('assets/muscles.png'),
+                ),
+                width: 80,
+                height: 80,
+              ),
+              margin: EdgeInsets.only(bottom: 20),
+            ),
+            Container(
+              child: Text('Welcome to CHAD', style: TextStyle(fontSize: 24),),
+              margin: EdgeInsets.only(bottom: 10),
+            ),
+            Container(
+              child: Text('Please login with the credentials we provided', style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,),
+              margin: EdgeInsets.only(bottom: 10),
+            ),
+            new Form(
+              key: _key,
+              autovalidate: _validate,
+              child: FormUI(),
+            ),
+          ],
+        )
       ),
     );
   }
@@ -67,12 +89,12 @@ class _MyAppState extends State<Body> {
                 final form = _key.currentState;
                 if (form.validate()) {
                   form.save();
-                  _showPending(context);
+                  var bar = _showPending(context);
                   Map<String, dynamic> response = await _credential.login();
+                  bar.close();
                   if (response['statusCode'] == 200) {
                     Role role = convertToRole(response['user']['role']);
                     if (role != null) {
-                      _showSuccess(context);
                       User user = new User();
                       user.firstName = response['user']['firstName'];
                       user.lastName = response['user']['lastName'];
@@ -160,22 +182,15 @@ class _MyAppState extends State<Body> {
     }
   }
 
-  _showPending(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _showPending(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(SnackBar(
       content: Text('Attempting to login'),
       backgroundColor: Colors.orange,
     ));
   }
 
-  _showSuccess(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Login successful'),
-      backgroundColor: Colors.green,
-    ));
-  }
-
   _showFailure(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    return Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
     ));
