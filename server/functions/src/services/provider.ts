@@ -1,41 +1,3 @@
-
-/*import db from '../index';
-import { Provider } from '../models/provider';
-
-const COLLECTION = 'provider';
-const RELATIONSHIP = 'user_providers';
-
-export function findAll() {
-  return db.collection(COLLECTION).get();
-};
-
-export function findOne(id: string) {
-  return db.collection(COLLECTION).doc(id).get();
-}
-
-export async function insertOne(provider: Provider) {
-  const providerResult = await db.collection(COLLECTION).add(provider);
-  const update: { [id: string]: any; } = {};
-  update[providerResult.id] = true
-  await db.collection(RELATIONSHIP).doc(provider.email).set(update, { merge: true });
-  return providerResult;
-}
-
-export async function deleteOne(id: string) {
-  const providerResult = await db.collection(COLLECTION).doc(id).get();
-  const provider: any = providerResult.data();
-  const update: { [id: string]: any; } = {};
-  update[id] = null;
-  await db.collection(RELATIONSHIP).doc(provider.email).set(update, { merge: true });
-  return db.collection(COLLECTION).doc(id).delete();
-}
-
-export function updateOne(id: string, data: any) {
-  return db.collection(COLLECTION).doc(id).set(data, { merge: true });
-}
-
-*/
-
 import db from '../index';
 import { Provider } from '../models/provider';
 
@@ -69,4 +31,17 @@ export async function deleteOne(id: string) {
 
 export function updateOne(id: string, data: any) {
   return db.collection(PROVIDERS).doc(id).set(data, { merge: true });
+}
+
+export function initOne(id: string) {
+  const data = {
+    sunday: 'closed',
+    monday: 'closed',
+    tuesday: 'closed',
+    wednesday: 'closed',
+    thursday: 'closed',
+    friday: 'closed',
+    saturday: 'closed',
+  }
+  return db.collection(PROVIDERS).doc(id).set(data, { merge: true});
 }

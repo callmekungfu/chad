@@ -33,17 +33,19 @@ export async function findOne(req: express.Request, res: express.Response) {
     if (id) {
       const providerResult = await Providers.findOne(id);
       if (providerResult.exists) {
-        const servicesIdResult: any = await ProviderServices.findOne(id);
-        const object = servicesIdResult.data();
-        const keys: any[] = Object.keys(object).filter(key => object[key] === true);
-        const servicesResult = await Services.findBatch(keys);
         const services: any = [];
-        servicesResult.forEach((service: any) => {
-          services.push({
-            id: service.id,
-            data: service.data()
+        const servicesIdResult: any = await ProviderServices.findOne(id);
+        if (servicesIdResult.exists) {
+          const object = servicesIdResult.data();
+          const keys: any[] = Object.keys(object).filter(key => object[key] === true);
+          const servicesResult = await Services.findBatch(keys);
+          servicesResult.forEach((service: any) => {
+            services.push({
+              id: service.id,
+              data: service.data()
+            });
           });
-        });
+        }
         return res.status(200).json({
           isSuccess: true,
           provider: {
@@ -81,11 +83,12 @@ export async function insertOne(req: express.Request, res: express.Response) {
     } else {
       const providerInsert = await Providers.insertOne(req.body);
       const providerResult = await providerInsert.get();
+      await Providers.initOne(providerInsert.id);
       return res.status(201).json({
         isSuccess: true,
         provider: {
           id: providerInsert.id,
-          data: providerResult.data()
+          data: providerResult.data(),
         }
       });
     }

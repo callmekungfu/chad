@@ -29,9 +29,6 @@ export const post = {
 
 export const put = {
   "properties": {
-    "email": {
-      "type": "string"
-    },
     "phoneNumber": {
       "type": "string"
     },
@@ -42,6 +39,27 @@ export const put = {
       "type": "string",
     },
     "description": {
+      "type": "string",
+    },
+    "sunday": {
+      "type": "string",
+    },
+    "monday": {
+      "type": "string",
+    },
+    "tuesday": {
+      "type": "string",
+    },
+    "wednesday": {
+      "type": "string",
+    },
+    "thursday": {
+      "type": "string",
+    },
+    "friday": {
+      "type": "string",
+    },
+    "saturday": {
       "type": "string",
     },
     "isLiscened": {

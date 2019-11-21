@@ -375,3 +375,10 @@ Response(s)
 ``` json
 204 NOT FOUND
 ```
+
+### DELETE /providers/:providerId
+
+Response(s)
+
+``` json
+204 NOT FOUND
