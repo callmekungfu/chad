@@ -1,5 +1,6 @@
 import 'package:client/models/providerProfile.dart';
 import 'package:client/models/user.dart';
+import 'package:client/screens/providerProfile/providerProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/service.dart';
 
@@ -50,7 +51,7 @@ class _MyAppState extends State<Body> {
     return FutureBuilder<ProviderProfile>(
         future: profile,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) { // TODO INVERT THIS THING
+          if (snapshot.data == null) {
             return Container(
                 child: Center(
               child: Text("Loading..."),
@@ -63,10 +64,7 @@ class _MyAppState extends State<Body> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    child: Text(
-                      'Licensed',
-                      style: TextStyle(color: Colors.green),
-                    ),
+                    child: generateStatusTag(data.liscensed),
                     margin: EdgeInsets.only(bottom: 10),
                   ),
                   Container(
@@ -136,6 +134,9 @@ class _MyAppState extends State<Body> {
                             icon: Icon(Icons.edit),
                             label: Text('Modify Profile'),
                             onPressed: () {
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => ProfileScreen(id: user.provider, user: user,))
+                              );
                               refreshProfile();
                             },
                           ),
@@ -255,6 +256,11 @@ class _MyAppState extends State<Body> {
     h = hour < 10 ? '0' + hour.toString() : hour.toString();
     m = minute < 10 ? '0' + minute.toString() : minute.toString();
     return h + ':' + m;
+  }
+
+  generateStatusTag(bool isLicensed) {
+    return isLicensed ? Text('Licensed', style: TextStyle(color: Colors.green),) 
+                      : Text('Not Licensed', style: TextStyle(color: Colors.red),);
   }
 
   setTime(TimeOfDay time, String date, bool start) {

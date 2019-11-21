@@ -1,5 +1,6 @@
 import 'package:client/models/user.dart';
 import 'package:client/screens/employee-hub-view/components/body.dart';
+import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
 
 import 'components/service-list.dart';
@@ -41,6 +42,12 @@ class _EmployeeHubViewState extends State<EmployeeHubView> {
           selectedItemColor: Colors.blue,
           onTap: _onItemTapped,
         ),
+        floatingActionButton: this._selectedIndex == 1 ? FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, new MaterialPageRoute(builder: (context)=> ServiceManagementForm()));
+          },
+          child: Icon(Icons.add),
+        ) : null,
     );
   }
   void _onItemTapped(int index) {

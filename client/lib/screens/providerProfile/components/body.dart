@@ -116,18 +116,34 @@ class _HomeMaterialState extends State<Body> {
                             if (form.validate()) {
                               form.save();
                               _showPending(context);
-                              Map<String, dynamic> response =
-                                  await _profile.create();
-                              if (response['statusCode'] == 201) {
-                                _showSuccess(context);
+                              Map<String, dynamic> response;
+                              
+                              if (widget.id == null) {
+                                response = await _profile.create();
+                                if (response['statusCode'] == 201) {
+                                  _showSuccess(context);
+                                } else {
+                                  _showFailure(context, response['msg']);
+                                }
+                                Navigator.push(context, 
+                                  MaterialPageRoute(
+                                    builder: (context) => EmployeeHubView(user: user,)
+                                  )
+                                );
                               } else {
-                                _showFailure(context, response['msg']);
+                                _profile.id = widget.id;
+                                response = await _profile.update();
+                                if (response['statusCode'] == 200) {
+                                  _showSuccess(context);
+                                } else {
+                                  _showFailure(context, response['msg']);
+                                }
+                                Navigator.push(context, 
+                                  MaterialPageRoute(
+                                    builder: (context) => EmployeeHubView(user: user,)
+                                  )
+                                );
                               }
-                              Navigator.push(context, 
-                                MaterialPageRoute(
-                                  builder: (context) => EmployeeHubView(user: user,)
-                                )
-                              );
                             }
                           },
                           child: Text('Save'))

@@ -7,6 +7,7 @@ class ProviderProfile {
   String phoneNumber;
   String address;
   String description;
+  String id;
   bool liscensed = false;
 
   ProviderProfile(
@@ -25,6 +26,10 @@ class ProviderProfile {
 
   Future<Map<String, dynamic>> create() async {
     return createProviderProfile(this);
+  }
+
+  Future<Map<String, dynamic>> update() async {
+    return updateProviderProfile(this);
   }
 
   static Future<ProviderProfile> getProviderProfile(String id) async {

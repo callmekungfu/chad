@@ -27,6 +27,29 @@ Future<Map<String, dynamic>> createProviderProfile(ProviderProfile _profile) asy
   return output;
 }
 
+Future<Map<String, dynamic>> updateProviderProfile(ProviderProfile _profile) async {
+  Map<String, String> headers = {"Content-type": "application/json"};
+  Map<String, dynamic> json = {
+    "email": _profile.email,
+    "company": _profile.companyName,
+    "phoneNumber": _profile.phoneNumber,
+    "address": _profile.address,
+    "description": _profile.description,
+    "isLiscensed": _profile.liscensed,
+  };
+  http.Response response;
+  try {
+    response = await http.put('${constants.DEV_API}/providers/${_profile.id}',
+        headers: headers, body: jsonEncode(json));
+  } catch (_) {
+    print(_);
+    return constants.ERROR_RESPONSE;
+  }
+  Map<String, dynamic> output = jsonDecode(response.body);
+  output['statusCode'] = response.statusCode;
+  return output;
+}
+
 Future<ProviderProfile> getProviderProfile(String id) async {
   http.Response response;
   try {
