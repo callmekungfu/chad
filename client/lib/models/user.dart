@@ -7,6 +7,7 @@ class User {
   String lastName;
   String userName;
   String password;
+  String provider;
   Role role;
 
   Future<Map<String, dynamic>> create() async {

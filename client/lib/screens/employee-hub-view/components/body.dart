@@ -1,29 +1,34 @@
 import 'package:client/models/providerProfile.dart';
+import 'package:client/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/service.dart';
 
 class Body extends StatefulWidget {
+  User user;
+  Body({@required this.user});
+
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState(user: user);
 }
 
 class _MyAppState extends State<Body> {
   Future<dynamic> profile;
   Map<String, String> availability;
+  User user;
+
+  _MyAppState({@required this.user});
 
   @override
   void initState() {
     super.initState();
     refreshAvailabilities();
+    refreshProfile();
   }
 
-  @override
-  void didUpdateWidget(Widget old) {
-    refreshAvailabilities();
-  }
-
-  void refreshProfile() {
-    // var profile = ProviderProfile.getProviderProfile('wangyonglin1999@gmail.com');
+  void refreshProfile() async {
+    setState(() {
+      profile = ProviderProfile.getProviderProfile(user.provider);
+    });
   }
   void refreshAvailabilities() {
     // reload
@@ -42,15 +47,16 @@ class _MyAppState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Service>>(
+    return FutureBuilder<ProviderProfile>(
         future: profile,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data != null) { // TODO INVERT THIS THING
+          if (snapshot.data == null) { // TODO INVERT THIS THING
             return Container(
                 child: Center(
               child: Text("Loading..."),
             ));
           } else {
+            ProviderProfile data = snapshot.data;
             return SingleChildScrollView(
               child: Container(
               child: Column(
@@ -65,7 +71,7 @@ class _MyAppState extends State<Body> {
                   ),
                   Container(
                     child: Text(
-                      'Jeff Beso\'s Masage Parlor',
+                      data.companyName,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 24),
                     ),
@@ -73,7 +79,7 @@ class _MyAppState extends State<Body> {
                   ),
                   Container(
                     child: Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis aliquam justo, vitae aliquam felis consequat a. Etiam sit amet volutpat mi, non egestas sem. Morbi facilisis pharetra tempor.',
+                      data.description,
                       textAlign: TextAlign.center,
                     ),
                     margin: EdgeInsets.only(bottom: 20),
@@ -82,10 +88,10 @@ class _MyAppState extends State<Body> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          child: Text('1096 Bathgate Drive'),
+                          child: Text(data.address),
                         ),
                         Container(
-                          child: Text('Ottawa, Ontario. K1J 8G1'),
+                          child: Text(data.phoneNumber),
                         ),
                       ],
                     ),
@@ -130,7 +136,7 @@ class _MyAppState extends State<Body> {
                             icon: Icon(Icons.edit),
                             label: Text('Modify Profile'),
                             onPressed: () {
-                              print('pressed');
+                              refreshProfile();
                             },
                           ),
                         )
@@ -182,7 +188,6 @@ class _MyAppState extends State<Body> {
                       initialTime: TimeOfDay.fromDateTime(DateTime.parse(formatDT(startTime(data[key])))),
                     );
                     setTime(time, key, true);
-                    print(timeStringBuilder(time.hour, time.minute));
                   },),
                   FlatButton(child: Text(endTime(data[key])), onPressed: () async {
                     TimeOfDay time = await showTimePicker(

@@ -1,10 +1,15 @@
+import 'package:client/actions.dart' as ChadActions;
 import 'package:client/screens/admin/admin-screen.dart';
 import 'package:client/screens/adminHubView/adminHubView.dart';
+import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
+import 'package:client/screens/providerProfile/providerProfile.dart';
+import 'package:client/state.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/credential.dart';
 import 'package:client/screens/home/home.dart';
 import 'package:client/models/user.dart';
 import 'package:client/models/role.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -14,6 +19,7 @@ class Body extends StatefulWidget {
 class _MyAppState extends State<Body> {
   GlobalKey<FormState> _key = new GlobalKey();
   bool _validate = false;
+  User _user;
   final _credential = Credential();
   String name, email, mobile;
 
@@ -47,49 +53,77 @@ class _MyAppState extends State<Body> {
             validator: validatePassword,
             onSaved: (val) => setState(() => _credential.password = val)),
         new SizedBox(height: 25.0),
-        new SizedBox(
-          child: new RaisedButton(
-            onPressed: () async {
-              final form = _key.currentState;
-              if (form.validate()) {
-                form.save();
-                _showPending(context);
-                Map<String, dynamic> response = await _credential.login();
-                if (response['statusCode'] == 200) {
-                  Role role = convertToRole(response['user']['role']);
-                  if (role != null) {
-                    _showSuccess(context);
-                    User user = new User();
-                    user.firstName = response['user']['firstName'];
-                    user.lastName = response['user']['lastName'];
-                    user.role = role;
-                    if (user.role == Role.ADMINISTRATOR) {
-                      Navigator.push(
+        StoreConnector<ChadAppState, VoidCallback>(
+          converter: (store) {
+            return () => store.dispatch({
+              'type': ChadActions.Actions.AUTHENTICATE,
+              'user': _user,
+            });
+          },
+          builder: (context, callback) {
+          return SizedBox(
+            child: RaisedButton(
+              onPressed: () async {
+                final form = _key.currentState;
+                if (form.validate()) {
+                  form.save();
+                  _showPending(context);
+                  Map<String, dynamic> response = await _credential.login();
+                  if (response['statusCode'] == 200) {
+                    Role role = convertToRole(response['user']['role']);
+                    if (role != null) {
+                      _showSuccess(context);
+                      User user = new User();
+                      user.firstName = response['user']['firstName'];
+                      user.lastName = response['user']['lastName'];
+                      user.provider = response['user']['provider'];
+                      user.userName = response['user']['userName'];
+                      user.role = role;
+                      setState(() {
+                        _user = user;
+                        callback;
+                      });
+                      if (user.role == Role.ADMINISTRATOR) {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AdminHubView(),
-                          ));
+                          )
+                        );
+                      } else {
+                        if (user.provider == null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileScreen(user: user,)
+                            )
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmployeeHubView(user: user,)
+                            )
+                          );
+                        }
+                      }
                     } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Home(user: user),
-                          ));
+                      _showFailure(context, "Client role error");
                     }
                   } else {
-                    _showFailure(context, "Client role error");
+                    _showFailure(context, response['message']);
                   }
-                } else {
-                  _showFailure(context, response['message']);
                 }
-              }
-            },
-            color: Colors.blue,
-            child: Text('Login', style: TextStyle(color: Colors.white))
-          ),
-          width: double.infinity,
-          height: 45,
+              },
+              color: Colors.blue,
+              child: Text('Login', style: TextStyle(color: Colors.white))
+            ),
+            width: double.infinity,
+            height: 45,
+          );
+          },
         )
+        
       ],
     );
   }

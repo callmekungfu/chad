@@ -1,4 +1,5 @@
 import 'package:client/services/providerProfile.dart';
+import 'package:client/services/providerProfile.dart' as service;
 
 class ProviderProfile {
   String email;
@@ -27,6 +28,6 @@ class ProviderProfile {
   }
 
   static Future<ProviderProfile> getProviderProfile(String id) async {
-    return getProviderProfile(id);
+    return service.getProviderProfile(id);
   }
 }

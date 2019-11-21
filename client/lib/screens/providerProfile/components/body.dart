@@ -1,19 +1,23 @@
+import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/providerProfile.dart';
 import 'package:client/models/user.dart';
 
 class Body extends StatefulWidget {
-  @override
-  _HomeMaterialState createState() => _HomeMaterialState();
-
   final String id;
-  Body({Key key, @required this.id}) : super(key: key);
+  final User user;
+  Body({Key key, this.id, this.user}) : super(key: key);
+
+  @override
+  _HomeMaterialState createState() => _HomeMaterialState(
+    user: this.user
+  );
 }
 
 class _HomeMaterialState extends State<Body> {
   final _formKey = GlobalKey<FormState>();
   ProviderProfile _profile = new ProviderProfile(liscensed: false);
-  final String user;
+  final User user;
 
   _HomeMaterialState({@required this.user});
 
@@ -45,6 +49,7 @@ class _HomeMaterialState extends State<Body> {
         }
       });
     }
+    _profile.email = user.userName;
   }
 
   @override
@@ -113,11 +118,16 @@ class _HomeMaterialState extends State<Body> {
                               _showPending(context);
                               Map<String, dynamic> response =
                                   await _profile.create();
-                              if (response['statusCode'] == 200) {
+                              if (response['statusCode'] == 201) {
                                 _showSuccess(context);
                               } else {
                                 _showFailure(context, response['msg']);
                               }
+                              Navigator.push(context, 
+                                MaterialPageRoute(
+                                  builder: (context) => EmployeeHubView(user: user,)
+                                )
+                              );
                             }
                           },
                           child: Text('Save'))

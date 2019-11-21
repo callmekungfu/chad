@@ -16,7 +16,7 @@ Future<Map<String, dynamic>> createProviderProfile(ProviderProfile _profile) asy
   };
   http.Response response;
   try {
-    response = await http.put('${constants.API}/providers',
+    response = await http.post('${constants.DEV_API}/providers',
         headers: headers, body: jsonEncode(json));
   } catch (_) {
     print(_);
@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> createProviderProfile(ProviderProfile _profile) asy
 Future<ProviderProfile> getProviderProfile(String id) async {
   http.Response response;
   try {
-    response = await http.get("${constants.API}/providers/$id");
+    response = await http.get("${constants.DEV_API}/providers/$id");
     print(response);
   } catch (_) {
     print(_);
@@ -39,14 +39,13 @@ Future<ProviderProfile> getProviderProfile(String id) async {
 
   var jsonData = json.decode(response.body);
 
-  ProviderProfile _profile;
-  var data = jsonData['data'];
+  ProviderProfile _profile = new ProviderProfile();
+  var data = jsonData['provider']['data'];
 
   _profile.companyName = data['company'] != null ? data['company'] : '';
   _profile.phoneNumber = data['phoneNumber'] != null ? data['phoneNumber'] : '';
   _profile.address = data['address'] != null ? data['address'] : '';
   _profile.description = data['description'] != null ? data['description'] : '';
   _profile.liscensed = data['isLiscensed'] != null ? data['isLiscensed'] : false;
-
   return _profile;
 }
