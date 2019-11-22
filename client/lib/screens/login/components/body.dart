@@ -1,12 +1,10 @@
 import 'package:client/actions.dart' as ChadActions;
-import 'package:client/screens/admin/admin-screen.dart';
 import 'package:client/screens/adminHubView/adminHubView.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
 import 'package:client/screens/providerProfile/providerProfile.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/credential.dart';
-import 'package:client/screens/home/home.dart';
 import 'package:client/models/user.dart';
 import 'package:client/models/role.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -112,23 +110,11 @@ class _MyAppState extends State<Body> {
                             builder: (context) => AdminHubView(),
                           )
                         );
-                      } else {
-                        if (user.provider == null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileScreen(user: user,)
-                            )
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmployeeHubView(user: user,)
-                            )
-                          );
-                        }
                       }
+                      if (user.role == Role.SERVICE_PROVIDER) {
+                        _nagivateToServiceProvider(user);
+                      }
+                      
                     } else {
                       _showFailure(context, "Client role error");
                     }
@@ -194,5 +180,23 @@ class _MyAppState extends State<Body> {
       content: Text(message),
       backgroundColor: Colors.red,
     ));
+  }
+
+  void _nagivateToServiceProvider(User user) {
+    if (user.provider == null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(user: user,)
+        )
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmployeeHubView(user: user,)
+        )
+      );
+    }
   }
 }

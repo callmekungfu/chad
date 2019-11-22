@@ -3,6 +3,7 @@ import 'package:client/reducers.dart';
 import 'package:client/screens/employee-hub-view/components/service-list.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
 import 'package:client/screens/home/home.dart';
+import 'package:client/screens/patient-hub-view/patient-hub-view.dart';
 import 'package:client/screens/service-management/service-management.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class ChadApp extends StatelessWidget {
         store: store,
         child: MaterialApp(
           title: 'CHAD Clinic',
-          initialRoute: '/',
+          initialRoute: '/patient',
           routes: <String, WidgetBuilder>{
             "/": (BuildContext context) => Home(),
             "/login": (BuildContext context) => LoginScreen(),
@@ -43,6 +44,7 @@ class ChadApp extends StatelessWidget {
             "/service-provider": (BuildContext context) => EmployeeHubView(),
             "/service-provider/list": (BuildContext context) => ServiceListWidget(showAll: false, user: null,),
             "/service-provider/form": (BuildContext context) => ProfileScreen(),
+            "/patient": (BuildContext context) => PatientHubView(),
           },
         ),
       );
