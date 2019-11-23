@@ -1,7 +1,9 @@
 import 'package:client/models/providerProfile.dart';
 import 'package:client/screens/patient-hub-view/components/provider-profile.dart';
+import 'package:client/screens/patient-hub-view/components/provider-services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 
 class ServiceProviderDetailsView extends StatefulWidget {
   ProviderProfile profile;
@@ -20,7 +22,8 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
       appBar: AppBar(
         title: Text(widget.profile.companyName),
         ),
-        body: this._selectedIndex == 0 ? ProviderProfileWidget(profile: widget.profile,) : null,
+        body: this._selectedIndex == 0 ? ProviderProfileWidget(profile: widget.profile,)
+                                       : ProviderServiceListWidget(id: widget.profile.id,),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -54,7 +57,34 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
               backgroundColor: Colors.white,
               label: 'Rate This Clinic',
               labelStyle: TextStyle(fontSize: 18.0),
-              onTap: () => print('FIRST CHILD')
+              onTap: () async {
+                var val = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      title: Text('Rate ${widget.profile.companyName}', textAlign: TextAlign.center,),
+                      contentPadding: EdgeInsets.all(20),
+                      children: <Widget>[
+                        Container(
+                          child: Center(
+                            child: StarRating(
+                              size: 40,
+                              onRatingChanged: (val) {
+                                Navigator.of(context).pop(val);
+                              },
+                            ),
+                          ),
+                          margin: EdgeInsets.only(bottom: 10),
+                        ),
+                        Text('Thank you for rating ${widget.profile.companyName}, your rating helps us better determine the quality of service provided.',
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    );
+                  }
+                );
+                // TODO do something with `val`
+              }
             ),
             SpeedDialChild(
               child: Icon(Icons.check),

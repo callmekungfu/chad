@@ -66,6 +66,7 @@ Future<List<ProviderProfile>> queryProviderProfile({String query}) async{
   for (dynamic l in jsonData['provider']) {
     var data = l['data'];
     ProviderProfile _profile = new ProviderProfile();
+    _profile.id = l['id'];
     _profile.companyName = data['company'] != null ? data['company'] : '';
     _profile.phoneNumber = data['phoneNumber'] != null ? data['phoneNumber'] : '';
     _profile.address = data['address'] != null ? data['address'] : '';
