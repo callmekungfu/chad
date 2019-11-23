@@ -106,11 +106,13 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                       actions: <Widget>[
                         FlatButton(child: Text('Book Appointment'), onPressed: () {Navigator.of(context).pop(true);},),
                         FlatButton(child: Text('Cancel'), onPressed: () {Navigator.of(context).pop(false);},),
-
                       ],
                     );
                   }
                 );
+                if (res) {
+                  // TODO Do appointment
+                }
               }
             ),
           ],
