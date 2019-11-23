@@ -1,6 +1,7 @@
 import 'package:client/actions.dart' as ChadActions;
 import 'package:client/screens/adminHubView/adminHubView.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
+import 'package:client/screens/patient-hub-view/patient-hub-view.dart';
 import 'package:client/screens/providerProfile/providerProfile.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,9 @@ class _MyAppState extends State<Body> {
                       if (user.role == Role.SERVICE_PROVIDER) {
                         _nagivateToServiceProvider(user);
                       }
-                      
+                      if (user.role == Role.PATIENT) {
+                        _navigateToPatient();
+                      }
                     } else {
                       _showFailure(context, "Client role error");
                     }
@@ -198,5 +201,14 @@ class _MyAppState extends State<Body> {
         )
       );
     }
+  }
+
+  void _navigateToPatient() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PatientHubView()
+        )
+      );
   }
 }

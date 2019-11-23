@@ -1,8 +1,8 @@
-import 'package:client/models/user.dart';
 import 'package:client/reducers.dart';
 import 'package:client/screens/employee-hub-view/components/service-list.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
 import 'package:client/screens/home/home.dart';
+import 'package:client/screens/patient-hub-view/components/provider-details.dart';
 import 'package:client/screens/patient-hub-view/patient-hub-view.dart';
 import 'package:client/screens/service-management/service-management.dart';
 import 'package:client/state.dart';
@@ -45,6 +45,7 @@ class ChadApp extends StatelessWidget {
             "/service-provider/list": (BuildContext context) => ServiceListWidget(showAll: false, user: null,),
             "/service-provider/form": (BuildContext context) => ProfileScreen(),
             "/patient": (BuildContext context) => PatientHubView(),
+            "/patient/details": (BuildContext context) => ServiceProviderDetailsView(),
           },
         ),
       );

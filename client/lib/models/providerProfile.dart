@@ -13,19 +13,15 @@ class ProviderProfile {
   Availabilities availabilities = Availabilities();
   List<Service> services = [];
 
-  ProviderProfile(
-      {String email,
-      String companyName,
-      String phoneNumber,
-      String address,
-      String description,
-      bool liscensed}) {
-    this.companyName = companyName;
-    this.phoneNumber = phoneNumber;
-    this.address = address;
-    this.description = description;
-    this.liscensed = liscensed;
-  }
+  ProviderProfile({
+    this.email,
+    this.companyName,
+    this.phoneNumber,
+    this.address,
+    this.description,
+    this.id,
+    this.liscensed,
+  });
 
   Future<Map<String, dynamic>> create() async {
     return createProviderProfile(this);
@@ -37,6 +33,10 @@ class ProviderProfile {
 
   static Future<ProviderProfile> getProviderProfile(String id) async {
     return service.getProviderProfile(id);
+  }
+
+  static Future<List<ProviderProfile>> getProviderProfiles({String query}) async {
+    return service.queryProviderProfile();
   }
 }
 
