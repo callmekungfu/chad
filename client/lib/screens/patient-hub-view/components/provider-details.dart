@@ -91,7 +91,27 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
               backgroundColor: Colors.blue,
               label: 'Book an Appointment',
               labelStyle: TextStyle(fontSize: 18.0),
-              onTap: () => print('SECOND CHILD'),
+              onTap: () async {
+                var res = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Are you sure?'),
+                      content: SingleChildScrollView(
+                        child: Column(children: <Widget>[
+                          Text('You are about to create an appointment with ${widget.profile.companyName}, the estimated wait time is:'),
+                          Center(child: Text('15 min', style: TextStyle(fontSize: 36),),)
+                        ],),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(child: Text('Book Appointment'), onPressed: () {Navigator.of(context).pop(true);},),
+                        FlatButton(child: Text('Cancel'), onPressed: () {Navigator.of(context).pop(false);},),
+
+                      ],
+                    );
+                  }
+                );
+              }
             ),
           ],
         ),

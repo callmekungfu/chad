@@ -23,7 +23,7 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
     return SingleChildScrollView(
       child: Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             child: generateStatusTag(data.liscensed),
@@ -32,7 +32,6 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
           Container(
             child: Text(
               data.companyName,
-              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24),
             ),
             margin: new EdgeInsets.only(bottom: 20),
@@ -40,7 +39,6 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
           Container(
             child: Text(
               data.description,
-              textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(bottom: 20),
           ),
@@ -77,7 +75,7 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
           ),
         ],
       ),
-      alignment: Alignment.topCenter,
+      alignment: Alignment.topLeft,
       padding: EdgeInsets.all(40)
       )
     );
@@ -87,9 +85,9 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
     var data = profile.availabilities.toMap();
     List<TableRow> rows = [];
     for (final key in data.keys) {
-      rows.add(
-        TableRow(
-          children: [
+      if (data[key] != 'closed') {
+        rows.add(
+          TableRow(children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(padding: EdgeInsets.all(10), child: Row(
@@ -98,12 +96,6 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
                 children: <Widget>[Text(capitalize(key))],
               )),
             ),
-          ]
-        )
-      );
-      if (data[key] != 'closed') {
-        rows.add(
-          TableRow(children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(padding: EdgeInsets.all(5), child: Row(
@@ -121,7 +113,15 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
           TableRow(children: [
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
-              child: Padding(padding: EdgeInsets.only(top: 10, bottom: 10), child: Row(
+              child: Padding(padding: EdgeInsets.all(10), child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[Text(capitalize(key))],
+              )),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.middle,
+              child: Padding(padding: EdgeInsets.all(5), child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[Text('Closed', style: TextStyle(color: Colors.black26),),],
