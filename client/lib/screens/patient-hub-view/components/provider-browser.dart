@@ -118,8 +118,12 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Wait time'),
-            Text('15 min', style: TextStyle(fontSize: 24),),
+            FutureBuilder(
+              future: profile.getWaitTime(),
+              builder: (context, snapshot) {
+                return Text(snapshot.data, style: TextStyle(fontSize: 24),);
+              },
+            ),
           ],
         ),
         onTap: () {

@@ -88,13 +88,14 @@ class _MyAppState extends State<Body> {
                 final form = _key.currentState;
                 if (form.validate()) {
                   form.save();
-                  var bar = _showPending(context);
+                  _showPending(context);
                   Map<String, dynamic> response = await _credential.login();
                   // bar.close();
                   if (response['statusCode'] == 200) {
                     Role role = convertToRole(response['user']['role']);
                     if (role != null) {
                       User user = new User();
+
                       user.firstName = response['user']['firstName'];
                       user.lastName = response['user']['lastName'];
                       user.provider = response['user']['provider'];
@@ -102,7 +103,6 @@ class _MyAppState extends State<Body> {
                       user.role = role;
                       setState(() {
                         _user = user;
-                        callback;
                       });
                       if (user.role == Role.ADMINISTRATOR) {
                         Navigator.push(

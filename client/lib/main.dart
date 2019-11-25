@@ -33,7 +33,7 @@ class ChadApp extends StatelessWidget {
         store: store,
         child: MaterialApp(
           title: 'CHAD Clinic',
-          initialRoute: '/patient',
+          initialRoute: '/',
           routes: <String, WidgetBuilder>{
             "/": (BuildContext context) => Home(),
             "/login": (BuildContext context) => LoginScreen(),

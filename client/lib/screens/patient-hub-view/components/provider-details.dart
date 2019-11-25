@@ -18,9 +18,18 @@ class ServiceProviderDetailsView extends StatefulWidget {
 class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView> {
   int _selectedIndex = 0;
 
+  Future<String> waitTimeFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      waitTimeFuture = widget.profile.getWaitTime();
+    });
+  }
+
   @override 
   Widget build(BuildContext context){
-    print(widget.user);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.profile.companyName),
@@ -90,7 +99,6 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                   );
                 }
               );
-              // TODO do something with `val`
             }
           ),
           SpeedDialChild(
@@ -105,14 +113,34 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                   return AlertDialog(
                     title: Text('Are you sure?'),
                     content: SingleChildScrollView(
-                      child: Column(children: <Widget>[
-                        Text('You are about to create an appointment with ${widget.profile.companyName}, the estimated wait time is:'),
-                        Center(child: Text('15 min', style: TextStyle(fontSize: 36),),)
-                      ],),
+                      child: FutureBuilder(
+                        future: widget.profile.getWaitTime(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return Text('loading...');
+                          }
+                          return Column(children: <Widget>[
+                            Container(child: Text('You are about to create an appointment with ${widget.profile.companyName}, the estimated wait time is:'),
+                              margin: EdgeInsets.only(bottom: 20)
+                            ),
+                            Center(
+                              child: Text(snapshot.data, style: TextStyle(fontSize: 36),)
+                            )
+                          ],);
+                        },
+                      )
                     ),
                     actions: <Widget>[
-                      FlatButton(child: Text('Book Appointment'), onPressed: () {
-                          Navigator.of(context).pop(true);
+                      FutureBuilder(
+                        future: widget.profile.getWaitTime(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null || snapshot.data == 'Closed') {
+                            return FlatButton(child: Text('Book Appointment'), onPressed: null,);
+                          }
+                          return FlatButton(child: Text('Book Appointment'), onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                          );
                         },
                       ),
                       FlatButton(child: Text('Cancel'), onPressed: () {Navigator.of(context).pop(false);},),
@@ -121,7 +149,27 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                 }
               );
               if (res != null && res) {
-                // TODO Do appointment
+                widget.profile.createAppointment(user: widget.user).then((Appointment data) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Success!'),
+                        content: SingleChildScrollView(
+                          child: Column(children: <Widget>[
+                            Container(child: Text('An appointment with ${widget.profile.companyName} has been booked, the appointment time is:'),
+                              margin: EdgeInsets.only(bottom: 20)
+                            ),
+                            Center(child: Text('${data.time}', style: TextStyle(fontSize: 36),),)
+                          ],),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(child: Text('Confirm'), onPressed: () {Navigator.of(context).pop(false);},),
+                        ],
+                      );
+                    }
+                  );
+                });
               }
             }
           ),

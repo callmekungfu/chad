@@ -59,11 +59,15 @@ class ProviderProfile {
       throw ErrorDescription('Provider ID is not defined, cannot create appointments');
     }
 
-    if (user.id == null) {
-      throw ErrorDescription('User ID is not defined, cannot ceate appointment');
+    if (user.userName == null) {
+      throw ErrorDescription('Username is not defined, cannot ceate appointment');
     }
 
-    service.createAppointment(this, user);
+    return service.createAppointment(this, user);
+  }
+
+  Future<String> getWaitTime() {
+    return service.getWaitTime(this);
   }
 }
 
@@ -104,5 +108,9 @@ class Appointment {
   String userID; // This is also the patient ID
   String time;
 
-  Appointment({@required this.serviceID, @required this.userID, @required this.time});
+  Appointment({
+    @required this.serviceID, 
+    @required this.userID, 
+    @required this.time,
+  });
 }

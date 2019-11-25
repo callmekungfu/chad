@@ -1,5 +1,6 @@
 import 'package:client/models/providerProfile.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProviderProfileWidget extends StatefulWidget {
   ProviderProfile profile;
@@ -16,7 +17,6 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
     setState(() {
       data = widget.profile;
     });
-    print(widget.profile.searchable);
   }
 
   @override
@@ -48,10 +48,28 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Text(data.address),
+                  child: FlatButton.icon(
+                    icon: Icon(Icons.map),
+                    label: Text(data.address, style: TextStyle(color: Colors.blue),),
+                    onPressed: () async {
+                      final url = Uri.encodeFull('http://maps.google.com/?q=${data.address}');
+                      if (await canLaunch(url)) {
+                        launch(url);
+                      }
+                    },
+                  ),
                 ),
                 Container(
-                  child: Text(data.phoneNumber),
+                  child: FlatButton.icon(
+                    icon: Icon(Icons.phone,),
+                    label: Text(data.phoneNumber, style: TextStyle(color: Colors.blue),),
+                    onPressed: () async {
+                      final url = 'tel:${data.phoneNumber}';
+                      if (await canLaunch(url)) {
+                        launch(url);
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
