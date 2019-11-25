@@ -18,6 +18,12 @@ Future<Map<String, dynamic>> authenticate(Credential credential) async {
     print(_);
     return constants.ERROR_RESPONSE;
   }
+  if (response.statusCode == 204) {
+    Map<String, dynamic> output = {};
+    output['statusCode'] = response.statusCode;
+    output['msg'] = 'Invalid Credentials';
+    return output;
+  }
   Map<String, dynamic> output = jsonDecode(response.body);
   output['statusCode'] = response.statusCode;
   return output;

@@ -102,8 +102,10 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(child: StarDisplay(value: 3,), margin: EdgeInsets.only(bottom: 10),),
             Text(profile.address),
+            // Container(child: StarDisplay(value: 3,), margin: EdgeInsets.only(bottom: 10, top: 8),),
+            Container(child: StarDisplay(value: 3,), margin: EdgeInsets.only(top: 10),),
+            
           ],
         ),
         trailing: Column(
@@ -119,7 +121,6 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
           );
         },
       ),
-      Divider()
     ];
   }
 }
