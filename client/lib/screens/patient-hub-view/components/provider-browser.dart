@@ -1,13 +1,17 @@
 import 'package:client/models/providerProfile.dart';
+import 'package:client/models/user.dart';
 import 'package:client/screens/patient-hub-view/components/provider-details.dart';
 import 'package:flutter/material.dart';
 
 class ServiceProviderBrowserWidget extends StatefulWidget {
+  User user;
+  ServiceProviderBrowserWidget({@required this.user});
   _ServiceProviderBrowserState createState() => _ServiceProviderBrowserState();
 }
 
 class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
   Future<List<ProviderProfile>> list;
+  String filter = '';
   
   @override
   void initState() {
@@ -59,6 +63,11 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
                           ),
                           hintText: 'Type Keyword',
                         ),
+                        onChanged: (String input) {
+                          setState(() {
+                            this.filter = input;
+                          });
+                        },
                       ),
                     )
                   ],
@@ -72,7 +81,7 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
                   return Center(child: Text('Loading...'),);
                 }
                 List<ProviderProfile> dataList = snapshot.data;
-                return generateListBody(dataList);
+                return generateListBody(filterList(dataList, this.filter));
               },
             ),
           ],
@@ -103,9 +112,7 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(profile.address),
-            // Container(child: StarDisplay(value: 3,), margin: EdgeInsets.only(bottom: 10, top: 8),),
             Container(child: StarDisplay(value: 3,), margin: EdgeInsets.only(top: 10),),
-            
           ],
         ),
         trailing: Column(
@@ -117,11 +124,19 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
         ),
         onTap: () {
           Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => ServiceProviderDetailsView(profile: profile,),)
+            MaterialPageRoute(builder: (context) => ServiceProviderDetailsView(profile: profile, user: widget.user,),)
           );
         },
       ),
     ];
+  }
+
+  List<ProviderProfile> filterList(List<ProviderProfile> raw, String query) {
+    var iter = raw.where((item) {
+      return item.searchable.toLowerCase().contains(query.toLowerCase());
+    });
+
+    return iter.toList();
   }
 }
 

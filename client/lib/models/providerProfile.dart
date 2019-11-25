@@ -1,6 +1,8 @@
 import 'package:client/models/service.dart';
+import 'package:client/models/user.dart';
 import 'package:client/services/providerProfile.dart';
 import 'package:client/services/providerProfile.dart' as service;
+import 'package:flutter/cupertino.dart';
 
 class ProviderProfile {
   String email;
@@ -23,6 +25,19 @@ class ProviderProfile {
     this.liscensed,
   });
 
+  String get searchable {
+    var str = '';
+    if (this.companyName != null) {
+      str += this.companyName + ' ';
+    }
+    if (this.address != null) {
+      str += this.address + ' ';
+    }
+    final aMap = this.availabilities.toMap();
+    str += aMap.toString();
+    return str;
+  }
+
   Future<Map<String, dynamic>> create() async {
     return createProviderProfile(this);
   }
@@ -37,6 +52,18 @@ class ProviderProfile {
 
   static Future<List<ProviderProfile>> getProviderProfiles({String query}) async {
     return service.queryProviderProfile();
+  }
+
+  Future<Appointment> createAppointment({@required User user}) {
+    if (this.id == null) {
+      throw ErrorDescription('Provider ID is not defined, cannot create appointments');
+    }
+
+    if (user.id == null) {
+      throw ErrorDescription('User ID is not defined, cannot ceate appointment');
+    }
+
+    service.createAppointment(this, user);
   }
 }
 
@@ -70,4 +97,12 @@ class Availabilities {
     this.saturday = map['saturday'];
     this.sunday = map['sunday'];
   }
+}
+
+class Appointment {
+  String serviceID;
+  String userID; // This is also the patient ID
+  String time;
+
+  Appointment({@required this.serviceID, @required this.userID, @required this.time});
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:client/models/providerProfile.dart';
 import 'package:client/models/service.dart';
+import 'package:client/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:client/constants.dart' as constants;
 
@@ -130,4 +131,10 @@ Future<ProviderProfile> getProviderProfile(String id) async {
   _profile.services = services;
 
   return _profile;
+}
+
+Future<Appointment> createAppointment(ProviderProfile profile, User user) {
+  final dateString = DateTime.now().toIso8601String();
+  print(dateString);
+  return null;
 }

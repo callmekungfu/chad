@@ -16,6 +16,7 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
     setState(() {
       data = widget.profile;
     });
+    print(widget.profile.searchable);
   }
 
   @override

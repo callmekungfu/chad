@@ -90,7 +90,7 @@ class _MyAppState extends State<Body> {
                   form.save();
                   var bar = _showPending(context);
                   Map<String, dynamic> response = await _credential.login();
-                  bar.close();
+                  // bar.close();
                   if (response['statusCode'] == 200) {
                     Role role = convertToRole(response['user']['role']);
                     if (role != null) {
@@ -116,7 +116,7 @@ class _MyAppState extends State<Body> {
                         _nagivateToServiceProvider(user);
                       }
                       if (user.role == Role.PATIENT) {
-                        _navigateToPatient();
+                        _navigateToPatient(user);
                       }
                     } else {
                       _showFailure(context, "Client role error");
@@ -203,11 +203,11 @@ class _MyAppState extends State<Body> {
     }
   }
 
-  void _navigateToPatient() {
+  void _navigateToPatient(User user) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PatientHubView()
+          builder: (context) => PatientHubView(user: user,)
         )
       );
   }

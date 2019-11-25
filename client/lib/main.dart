@@ -44,8 +44,8 @@ class ChadApp extends StatelessWidget {
             "/service-provider": (BuildContext context) => EmployeeHubView(),
             "/service-provider/list": (BuildContext context) => ServiceListWidget(showAll: false, user: null,),
             "/service-provider/form": (BuildContext context) => ProfileScreen(),
-            "/patient": (BuildContext context) => PatientHubView(),
-            "/patient/details": (BuildContext context) => ServiceProviderDetailsView(),
+            "/patient": (BuildContext context) => PatientHubView(user: null,),
+            "/patient/details": (BuildContext context) => ServiceProviderDetailsView(user: null, profile: null,),
           },
         ),
       );

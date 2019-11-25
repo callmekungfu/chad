@@ -1,4 +1,5 @@
 import 'package:client/models/providerProfile.dart';
+import 'package:client/models/user.dart';
 import 'package:client/screens/patient-hub-view/components/provider-profile.dart';
 import 'package:client/screens/patient-hub-view/components/provider-services.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,9 @@ import 'package:flutter_rating/flutter_rating.dart';
 
 class ServiceProviderDetailsView extends StatefulWidget {
   ProviderProfile profile;
+  User user;
 
-  ServiceProviderDetailsView({@required this.profile});
+  ServiceProviderDetailsView({@required this.profile, @required this.user});
   @override
   _ServiceProviderDetailsViewState createState() => _ServiceProviderDetailsViewState();
 }
@@ -18,6 +20,7 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
 
   @override 
   Widget build(BuildContext context){
+    print(widget.user);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.profile.companyName),

@@ -1,7 +1,11 @@
+import 'package:client/models/user.dart';
 import 'package:client/screens/patient-hub-view/components/provider-browser.dart';
 import 'package:flutter/material.dart';
 
 class PatientHubView extends StatefulWidget {
+  User user;
+
+  PatientHubView({@required this.user});
   @override
   _PatientHubViewState createState() => _PatientHubViewState();
 }
@@ -43,7 +47,7 @@ class _PatientHubViewState extends State<PatientHubView> {
           ],
         ),
       ),
-      body: ServiceProviderBrowserWidget(),
+      body: ServiceProviderBrowserWidget(user: widget.user,),
     );
   }
 }
