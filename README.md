@@ -380,5 +380,100 @@ Response(s)
 
 Response(s)
 
-``` json
 204 NOT FOUND
+
+### POST /providers/:providerId/dates/:date
+
+Body
+
+``` json
+{
+    "serviceId": "57VLDH0UcyQrhYBpCSmc",
+    "userId": "test",
+    "time" : "9:00"
+}
+
+```
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "appointment": {
+        "id": "Ry4jRIRtR81gLzcl0iNF",
+        "data": {
+            "time": "9:00",
+            "serviceId": "57VLDH0UcyQrhYBpCSmc",
+            "userId": "test"
+        }
+    }
+}
+
+```
+
+### GET /providers/f3ASWnDDNkjFwpsVBRRh/dates/24-11-2019
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "appointment": [
+        {
+            "id": "6Nzo8vbcaSTBtIacIFi5",
+            "data": {
+                "serviceId": "Lue07Yh2mFbQUvufXaye",
+                "userId": "test@test.ca",
+                "time": "9:00"
+            }
+        },
+        {
+            "id": "CYJfWNWHaqAeq3Tw84F3",
+            "data": {
+                "serviceId": "Lue07Yh2mFbQUvufXaye",
+                "userId": "test@test.ca",
+                "time": "9:30"
+            }
+        },
+        {
+            "id": "DZjj9g8ERZH9A1H8cE0j",
+            "data": {
+                "serviceId": "Lue07Yh2mFbQUvufXaye",
+                "userId": "test@test.ca",
+                "time": "9:15"
+            }
+        }
+    ]
+}
+
+```
+
+### GET /providers/f3ASWnDDNkjFwpsVBRRh/dates/24-11-2019?time=9:15
+
+Response(s)
+
+``` json
+{
+    "isSuccess": true,
+    "appointment": [
+        {
+            "id": "CYJfWNWHaqAeq3Tw84F3",
+            "data": {
+                "serviceId": "Lue07Yh2mFbQUvufXaye",
+                "userId": "test@test.ca",
+                "time": "9:30"
+            }
+        },
+        {
+            "id": "DZjj9g8ERZH9A1H8cE0j",
+            "data": {
+                "serviceId": "Lue07Yh2mFbQUvufXaye",
+                "userId": "test@test.ca",
+                "time": "9:15"
+            }
+        }
+    ]
+}
+
+```
