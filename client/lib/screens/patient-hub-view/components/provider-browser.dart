@@ -20,12 +20,6 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
     refreshData();
   }
 
-  @override
-  void didUpdateWidget(Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    refreshData();
-  }
-
   Future<void> refreshData() {
     setState(() {
       list = ProviderProfile.getProviderProfiles();

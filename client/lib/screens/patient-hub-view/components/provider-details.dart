@@ -100,7 +100,14 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                             },
                           ),
                         ),
-                        margin: EdgeInsets.only(bottom: 10),
+                      ),
+                      Container(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Add a comment Here...'
+                          ),
+                        ),
+                        margin: EdgeInsets.only(bottom: 20),
                       ),
                       Text('Thank you for rating ${widget.profile.companyName}, your rating helps us better determine the quality of service provided.',
                         textAlign: TextAlign.center,
