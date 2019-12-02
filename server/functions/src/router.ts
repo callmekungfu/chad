@@ -61,4 +61,12 @@ export function routerConfig(app: Application) {
   app.delete('/providers/:providerId/services/:serviceId',
     Providers.deleteService
   );
+
+  app.post('/providers/:providerId/dates/:date',
+    Providers.insertAppointment
+  )
+
+  app.get('/providers/:providerId/dates/:date',
+    Providers.findAllAppointments
+  )
 }
