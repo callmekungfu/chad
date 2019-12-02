@@ -1,13 +1,12 @@
 import 'package:client/models/user.dart';
 import 'package:client/screens/employee-hub-view/components/body.dart';
-import 'package:client/screens/service-management/service-management.dart';
 import 'package:flutter/material.dart';
 
 import 'components/service-list.dart';
 
 
 class EmployeeHubView extends StatefulWidget {
-  User user;
+  final User user;
   EmployeeHubView({Key key, this.user}) : super(key: key);
 
   @override

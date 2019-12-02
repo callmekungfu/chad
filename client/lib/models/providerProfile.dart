@@ -1,6 +1,9 @@
 import 'package:client/models/service.dart';
+import 'package:client/models/user.dart';
 import 'package:client/services/providerProfile.dart';
 import 'package:client/services/providerProfile.dart' as service;
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ProviderProfile {
   String email;
@@ -13,18 +16,27 @@ class ProviderProfile {
   Availabilities availabilities = Availabilities();
   List<Service> services = [];
 
-  ProviderProfile(
-      {String email,
-      String companyName,
-      String phoneNumber,
-      String address,
-      String description,
-      bool liscensed}) {
-    this.companyName = companyName;
-    this.phoneNumber = phoneNumber;
-    this.address = address;
-    this.description = description;
-    this.liscensed = liscensed;
+  ProviderProfile({
+    this.email,
+    this.companyName,
+    this.phoneNumber,
+    this.address,
+    this.description,
+    this.id,
+    this.liscensed,
+  });
+
+  String get searchable {
+    var str = '';
+    if (this.companyName != null) {
+      str += this.companyName + ' ';
+    }
+    if (this.address != null) {
+      str += this.address + ' ';
+    }
+    final aMap = this.availabilities.toMap();
+    str += aMap.toString();
+    return str;
   }
 
   Future<Map<String, dynamic>> create() async {
@@ -37,6 +49,26 @@ class ProviderProfile {
 
   static Future<ProviderProfile> getProviderProfile(String id) async {
     return service.getProviderProfile(id);
+  }
+
+  static Future<List<ProviderProfile>> getProviderProfiles({String query, http.Client client}) async {
+    return service.queryProviderProfile(client: client);
+  }
+
+  Future<Appointment> createAppointment({@required User user, http.Client client}) {
+    if (this.id == null) {
+      return null;
+    }
+
+    if (user.userName == null) {
+      return null;
+    }
+
+    return service.createAppointment(this, user);
+  }
+
+  Future<String> getWaitTime() {
+    return service.getWaitTime(this);
   }
 }
 
@@ -70,4 +102,16 @@ class Availabilities {
     this.saturday = map['saturday'];
     this.sunday = map['sunday'];
   }
+}
+
+class Appointment {
+  String serviceID;
+  String userID; // This is also the patient ID
+  String time;
+
+  Appointment({
+    @required this.serviceID, 
+    @required this.userID, 
+    @required this.time,
+  });
 }
