@@ -21,7 +21,7 @@ export const post = {
     },
     "role": {
       "type": "string",
-      "enum": ["patient", "administrator", "employee"]
+      "enum": ["patient", "administrator", "employee", "service_provider"]
     }
   }
 }

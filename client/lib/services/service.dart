@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:client/models/service.dart';
+import 'package:client/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:client/constants.dart' as constants;
 
@@ -78,7 +79,6 @@ Future<List<Service>> getServices() async {
       services.add(service);
     }
   }
-  print(services);
   return services;
 }
 
@@ -93,4 +93,37 @@ Future<bool> deleteService(Service service) async {
     print(_);
     return false;//TODO return an error response
   }
+}
+
+Future<bool> addServiceToUser(Service service, User user) async {
+  Map<String, String> headers = {
+    'Content-type': 'application/json'
+  };
+  Map<String, dynamic> body = {
+    'serviceId': service.id,
+  };
+  http.Response response;
+  try{
+    response = await http.post("${constants.API}/providers/${user.provider}/services",
+    headers: headers, body: jsonEncode(body));
+  }catch(_){
+    print(_);
+  }
+
+  Map<String, dynamic> output = jsonDecode(response.body);
+  output['statusCode'] = response.statusCode;
+  return output['statusCode'] == 201;  
+}
+
+Future<bool> removeServiceToUser(Service service, User user) async {
+  http.Response response;
+  try{
+    response = await http.delete("${constants.API}/providers/${user.provider}/services/${service.id}",);
+  }catch(_){
+    print(_);
+  }
+
+  Map<String, dynamic> output = {};
+  output['statusCode'] = response.statusCode;
+  return output['statusCode'] == 204;  
 }

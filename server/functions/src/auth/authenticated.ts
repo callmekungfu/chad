@@ -37,7 +37,7 @@ export async function login(req: express.Request, res: express.Response) {
         });
       };
 
-      const { firstName, lastName, role } = user;
+      const { firstName, lastName, role, provider } = user;
 
       return res.status(200).json({
         isSuccess: true,
@@ -46,6 +46,7 @@ export async function login(req: express.Request, res: express.Response) {
           firstName,
           lastName,
           role,
+          provider,
         }
       });
     }
