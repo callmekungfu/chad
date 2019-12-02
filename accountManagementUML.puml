@@ -56,12 +56,12 @@ skinparam backgroundColor HotPink
     }
 
     class Appointment {
-      -serviceId
       -time
-      -userId
     }
 
 
+    Client "1" -- "*" Appointment: > has a
+    Service "1" -- "*" Appointment: > has a
     ServiceProvider "1" -- "1" ProviderProfile: > has a
     ServiceProvider "1" -- "*" Rating: > has a
     ServiceProvider "1" -- "*" Date: > has a
