@@ -156,7 +156,7 @@ class _ProviderProfileState extends State<ProviderProfileWidget> {
     return phrase[0].toUpperCase() + phrase.substring(1).toLowerCase();
   }
 
-  generateStatusTag(bool isLicensed) {
+  Widget generateStatusTag(bool isLicensed) {
     return isLicensed ? Text('Licensed', style: TextStyle(color: Colors.green),)
                       : Text('Not Licensed', style: TextStyle(color: Colors.red),);
   }

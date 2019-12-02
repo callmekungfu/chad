@@ -52,38 +52,42 @@ Future<Map<String, dynamic>> updateProviderProfile(ProviderProfile _profile) asy
   return output;
 }
 
-Future<List<ProviderProfile>> queryProviderProfile({String query}) async{
+Future<List<ProviderProfile>> queryProviderProfile({String query, http.Client client}) async {
   http.Response response;
   try {
-    response = await http.get("${constants.API}/providers/");
+    response = client == null ? await http.get("${constants.API}/providers/") : await client.get("${constants.API}/providers/");
     print(response);
   } catch (_) {
     print(_);
     return null; //TODO return an error response
   }
 
-  var jsonData = json.decode(response.body);
-  List<ProviderProfile> list = [];
-  for (dynamic l in jsonData['provider']) {
-    var data = l['data'];
-    ProviderProfile _profile = new ProviderProfile();
-    _profile.id = l['id'];
-    _profile.companyName = data['company'] != null ? data['company'] : '';
-    _profile.phoneNumber = data['phoneNumber'] != null ? data['phoneNumber'] : '';
-    _profile.address = data['address'] != null ? data['address'] : '';
-    _profile.description = data['description'] != null ? data['description'] : '';
-    _profile.liscensed = data['isLiscensed'] != null ? data['isLiscensed'] : false;
-    _profile.availabilities.monday = data['monday'];
-    _profile.availabilities.tuesday = data['tuesday'];
-    _profile.availabilities.wednesday = data['wednesday'];
-    _profile.availabilities.thursday = data['thursday'];
-    _profile.availabilities.friday = data['friday'];
-    _profile.availabilities.saturday = data['saturday'];
-    _profile.availabilities.sunday = data['sunday'];
-    list.add(_profile);
+  if (response.statusCode != 200) {
+    throw Exception('Failed to Retrieve Profiles from Server');
+  } else {
+    var jsonData = json.decode(response.body);
+    List<ProviderProfile> list = [];
+    for (dynamic l in jsonData['provider']) {
+      var data = l['data'];
+      ProviderProfile _profile = new ProviderProfile();
+      _profile.id = l['id'];
+      _profile.companyName = data['company'] != null ? data['company'] : '';
+      _profile.phoneNumber = data['phoneNumber'] != null ? data['phoneNumber'] : '';
+      _profile.address = data['address'] != null ? data['address'] : '';
+      _profile.description = data['description'] != null ? data['description'] : '';
+      _profile.liscensed = data['isLiscensed'] != null ? data['isLiscensed'] : false;
+      _profile.availabilities.monday = data['monday'];
+      _profile.availabilities.tuesday = data['tuesday'];
+      _profile.availabilities.wednesday = data['wednesday'];
+      _profile.availabilities.thursday = data['thursday'];
+      _profile.availabilities.friday = data['friday'];
+      _profile.availabilities.saturday = data['saturday'];
+      _profile.availabilities.sunday = data['sunday'];
+      list.add(_profile);
+    }
+    
+    return list;
   }
-  
-  return list;
 }
 
 Future<ProviderProfile> getProviderProfile(String id) async {
@@ -133,7 +137,7 @@ Future<ProviderProfile> getProviderProfile(String id) async {
   return _profile;
 }
 
-Future<Appointment> createAppointment(ProviderProfile profile, User user) async {
+Future<Appointment> createAppointment(ProviderProfile profile, User user, {http.Client client}) async {
   Map<String, String> headers = {"Content-type": "application/json"};
   final now = DateTime.now();
   final dateString = now.toIso8601String();

@@ -2,7 +2,8 @@ import 'package:client/models/service.dart';
 import 'package:client/models/user.dart';
 import 'package:client/services/providerProfile.dart';
 import 'package:client/services/providerProfile.dart' as service;
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ProviderProfile {
   String email;
@@ -50,17 +51,17 @@ class ProviderProfile {
     return service.getProviderProfile(id);
   }
 
-  static Future<List<ProviderProfile>> getProviderProfiles({String query}) async {
-    return service.queryProviderProfile();
+  static Future<List<ProviderProfile>> getProviderProfiles({String query, http.Client client}) async {
+    return service.queryProviderProfile(client: client);
   }
 
-  Future<Appointment> createAppointment({@required User user}) {
+  Future<Appointment> createAppointment({@required User user, http.Client client}) {
     if (this.id == null) {
-      throw ErrorDescription('Provider ID is not defined, cannot create appointments');
+      return null;
     }
 
     if (user.userName == null) {
-      throw ErrorDescription('Username is not defined, cannot ceate appointment');
+      return null;
     }
 
     return service.createAppointment(this, user);
