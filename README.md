@@ -1,5 +1,5 @@
 # CHAD Limited.
-[![CircleCI](https://circleci.com/gh/professor-forward/chad/tree/master.svg?style=svg)](https://circleci.com/gh/professor-forward/chad/tree/master)
+[![CircleCI](https://circleci.com/gh/professor-forward/chad/tree/master.svg?style=svg&circle-token=ecfa7070fa171e53e5b6170984631f5a68fb20b0)](https://circleci.com/gh/professor-forward/chad/tree/master)
 
 ## Team Members
 
