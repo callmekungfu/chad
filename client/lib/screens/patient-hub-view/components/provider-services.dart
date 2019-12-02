@@ -27,8 +27,10 @@ class _ServiceListState extends State<ProviderServiceListWidget> {
     refreshProfile();
   }
 
-  void refreshProfile() async {
-    profile = ProviderProfile.getProviderProfile(widget.id);
+  Future<void> refreshProfile() async {
+    setState(() {
+      profile = ProviderProfile.getProviderProfile(widget.id);
+    });
   }
 
   @override
@@ -37,28 +39,34 @@ class _ServiceListState extends State<ProviderServiceListWidget> {
   }
 
   showMyBuilder() {
-    return FutureBuilder(
-      future: profile,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.data == null) {
-          return Center(
-            child: Container(
-              child: Text('Loading...'),
-            ),
+    return RefreshIndicator(
+      onRefresh: refreshProfile,
+      child: FutureBuilder(
+        future: profile,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return Center(
+              child: Container(
+                child: Text('Loading...'),
+              ),
+            );
+          }
+          List<Service> data = snapshot.data.services;
+          return Container(
+            child: RefreshIndicator(
+              onRefresh: refreshProfile,
+              child: ListView.separated(
+                padding: EdgeInsets.all(10),
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return generateShowMyListTile(data[i]);
+                },
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
+              ),
+            )
           );
-        }
-        List<Service> data = snapshot.data.services;
-        return Container(
-          child: ListView.separated(
-            padding: EdgeInsets.all(10),
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int i) {
-              return generateShowMyListTile(data[i]);
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 

@@ -11,6 +11,7 @@ class ServiceProviderBrowserWidget extends StatefulWidget {
 
 class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
   Future<List<ProviderProfile>> list;
+  Map<String, Future<String>> waitTimeFutures;
   String filter = '';
   
   @override
@@ -19,75 +20,93 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
     refreshData();
   }
 
-  void refreshData() {
+  @override
+  void didUpdateWidget(Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    refreshData();
+  }
+
+  Future<void> refreshData() {
     setState(() {
       list = ProviderProfile.getProviderProfiles();
+    });
+    list.then((List<ProviderProfile> providers) {
+      Map<String, Future<String>> temp = {};
+      for (var p in providers) {
+        temp[p.id] = p.getWaitTime();
+      }
+      setState(() {
+        waitTimeFutures = temp;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Text('Browse', 
-                        textAlign: TextAlign.center, 
-                        style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                      ),
-                      margin: EdgeInsets.only(bottom: 10),
-                    ),
-                    Container(
-                      child: Text('Find the clinic that best suits your needs', 
-                        textAlign: TextAlign.center, 
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                      margin: EdgeInsets.only(bottom: 40),
-                    ),
-                    Container(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                            borderSide: BorderSide(color: Colors.blue),
-                          ),
-                          hintText: 'Type Keyword',
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text('Browse', 
+                          textAlign: TextAlign.center, 
+                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                         ),
-                        onChanged: (String input) {
-                          setState(() {
-                            this.filter = input;
-                          });
-                        },
+                        margin: EdgeInsets.only(bottom: 10),
                       ),
-                    )
-                  ],
+                      Container(
+                        child: Text('Find the clinic that best suits your needs', 
+                          textAlign: TextAlign.center, 
+                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                        ),
+                        margin: EdgeInsets.only(bottom: 40),
+                      ),
+                      Container(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            hintText: 'Type Keyword',
+                          ),
+                          onChanged: (String input) {
+                            setState(() {
+                              this.filter = input;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ),
+              RefreshIndicator(
+                onRefresh: refreshData,
+                child: FutureBuilder<List<ProviderProfile>>(
+                  future: list,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.data == null) {
+                      return Center(child: Text('Loading...'),);
+                    }
+                    List<ProviderProfile> dataList = snapshot.data;
+                    return generateListBody(filterList(dataList, this.filter));
+                  },
                 ),
               )
-            ),
-            FutureBuilder<List<ProviderProfile>>(
-              future: list,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return Center(child: Text('Loading...'),);
-                }
-                List<ProviderProfile> dataList = snapshot.data;
-                return generateListBody(filterList(dataList, this.filter));
-              },
-            ),
-          ],
-        )
-      ),
-    );
+            ],
+          )
+        ),
+      );
   }
 
   generateListBody(List<ProviderProfile> dataList) {
@@ -119,8 +138,11 @@ class _ServiceProviderBrowserState extends State<ServiceProviderBrowserWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FutureBuilder(
-              future: profile.getWaitTime(),
+              future: waitTimeFutures[profile.id],
               builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Text('');
+                }
                 return Text(snapshot.data, style: TextStyle(fontSize: 24),);
               },
             ),

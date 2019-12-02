@@ -23,9 +23,19 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
   @override
   void initState() {
     super.initState();
+    refreshWaitTime();
+  }
+
+  void refreshWaitTime() {
     setState(() {
       waitTimeFuture = widget.profile.getWaitTime();
     });
+  }
+
+  @override
+  void didUpdateWidget(ServiceProviderDetailsView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    refreshWaitTime();
   }
 
   @override 
@@ -107,6 +117,7 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
             label: 'Book an Appointment',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () async {
+              refreshWaitTime();
               var res = await showDialog(
                 context: context,
                 builder: (context) {
@@ -114,7 +125,7 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                     title: Text('Are you sure?'),
                     content: SingleChildScrollView(
                       child: FutureBuilder(
-                        future: widget.profile.getWaitTime(),
+                        future: waitTimeFuture,
                         builder: (context, snapshot) {
                           if (snapshot.data == null) {
                             return Text('loading...');
@@ -132,7 +143,7 @@ class _ServiceProviderDetailsViewState extends State<ServiceProviderDetailsView>
                     ),
                     actions: <Widget>[
                       FutureBuilder(
-                        future: widget.profile.getWaitTime(),
+                        future: waitTimeFuture,
                         builder: (context, snapshot) {
                           if (snapshot.data == null || snapshot.data == 'Closed') {
                             return FlatButton(child: Text('Book Appointment'), onPressed: null,);
