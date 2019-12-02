@@ -1,6 +1,5 @@
 ```plantuml
-@startuml Account Management
-
+@startuml
 skinparam backgroundColor HotPink
 
     abstract class User{
@@ -20,6 +19,10 @@ skinparam backgroundColor HotPink
     }
     class Client extends User{
 
+    }
+    class Rating {
+      -score
+      -comment
     }
 
     class Service{
@@ -46,7 +49,23 @@ skinparam backgroundColor HotPink
       -sunday
     }
 
+    class Date {
+      -day
+      -month
+      -year
+    }
+
+    class Appointment {
+      -time
+    }
+
+
+    Client "1" -- "*" Appointment: > has a
+    Service "1" -- "*" Appointment: > has a
     ServiceProvider "1" -- "1" ProviderProfile: > has a
+    ServiceProvider "1" -- "*" Rating: > has a
+    ServiceProvider "1" -- "*" Date: > has a
+    Date "1" -- "*" Appointment: > has a
     ProviderProfile "1" -- "*" Service: > provides a
     Availability "1" -- "1" ProviderProfile: > has a
 @enduml

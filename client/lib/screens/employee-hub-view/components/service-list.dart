@@ -26,7 +26,6 @@ class _ServiceListState extends State<ServiceListWidget> {
 
   @override
   void didUpdateWidget(Widget oldWidget) {
-    print('update');
     setState(() {
       showAll = widget.showAll;
     });

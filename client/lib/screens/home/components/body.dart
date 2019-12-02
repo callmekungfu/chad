@@ -1,26 +1,55 @@
-import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
-import 'package:client/screens/providerProfile/providerProfile.dart';
+import 'package:client/screens/login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:client/models/user.dart';
 
 class Body extends StatelessWidget {
-  final User user;
-  Body({Key key, @required this.user}) : super(key: key);
-
-
-  String promptBuilder(User user) {
-    return 'Welcome ${user.firstName} ${user.lastName}, you are logged in as ${user.role.toString().split('.').last.toLowerCase()}';
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text(promptBuilder(user)),
-      ),
+    return Stack(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/home_screen_splash.jpg'),
+              colorFilter: ColorFilter.mode(Colors.black38, BlendMode.darken),
+              fit: BoxFit.cover
+            )
+          ),
+        ),
+        Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Container(
+                child: Text('CHAD Clinic', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),),
+              ),
+              Container(
+                child: Text('Amazing technology. Graceful care.', style: TextStyle(color: Colors.white),),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      child: Text('Let\'s get started!', style: TextStyle(fontSize: 16),),
+                      onPressed: () {
+                        Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => LoginScreen())
+                        );
+                      },
+                    ),
+                    height: 50,
+                    width: double.infinity,
+                  )
+                ),
+              )
+            ],
+          ),
+          padding: EdgeInsets.only(top: 90, bottom: 60, left: 20, right: 20),
+        )
+      ],
     );
   }
 }

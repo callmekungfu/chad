@@ -1,5 +1,6 @@
 import db from '../index';
 import { Provider } from '../models/provider';
+import { Appointment } from '../models/appointment';
 
 const PROVIDERS = 'providers';
 const USERS = 'users';
@@ -44,4 +45,16 @@ export function initOne(id: string) {
     saturday: 'closed',
   }
   return db.collection(PROVIDERS).doc(id).set(data, { merge: true});
+}
+
+export function insertAppointment(providerId: string, date: string, appointment: Appointment) {
+  return db.collection(PROVIDERS).doc(providerId).collection('dates').doc(date).collection('appointments').add(appointment);
+}
+
+export function findAllAppointments(providerId: string, date: string, curTime = -1) {
+  return db.collection(PROVIDERS).doc(providerId).collection('dates').doc(date).collection('appointments').where('timeInt', '>=', curTime).orderBy('timeInt').get();
+}
+
+export function findLastAppointment(providerId: string, date: string) {
+  return db.collection(PROVIDERS).doc(providerId).collection('dates').doc(date).collection('appointments').orderBy('timeInt', 'desc').limit(1).get();
 }

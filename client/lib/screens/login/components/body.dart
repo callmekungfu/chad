@@ -1,12 +1,11 @@
 import 'package:client/actions.dart' as ChadActions;
-import 'package:client/screens/admin/admin-screen.dart';
 import 'package:client/screens/adminHubView/adminHubView.dart';
 import 'package:client/screens/employee-hub-view/employee-hub-view.dart';
+import 'package:client/screens/patient-hub-view/patient-hub-view.dart';
 import 'package:client/screens/providerProfile/providerProfile.dart';
 import 'package:client/state.dart';
 import 'package:flutter/material.dart';
 import 'package:client/models/credential.dart';
-import 'package:client/screens/home/home.dart';
 import 'package:client/models/user.dart';
 import 'package:client/models/role.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -27,12 +26,34 @@ class _MyAppState extends State<Body> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: new Container(
-        margin: new EdgeInsets.all(15.0),
-        child: new Form(
-          key: _key,
-          autovalidate: _validate,
-          child: FormUI(),
-        ),
+        margin: new EdgeInsets.only(top: 60, bottom: 15, right: 15, left: 15),
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: SizedBox(
+                child: Image(
+                  image: AssetImage('assets/muscles.png'),
+                ),
+                width: 80,
+                height: 80,
+              ),
+              margin: EdgeInsets.only(bottom: 20),
+            ),
+            Container(
+              child: Text('Welcome to CHAD', style: TextStyle(fontSize: 24),),
+              margin: EdgeInsets.only(bottom: 10),
+            ),
+            Container(
+              child: Text('Please login with the credentials we provided', style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,),
+              margin: EdgeInsets.only(bottom: 10),
+            ),
+            new Form(
+              key: _key,
+              autovalidate: _validate,
+              child: FormUI(),
+            ),
+          ],
+        )
       ),
     );
   }
@@ -69,11 +90,12 @@ class _MyAppState extends State<Body> {
                   form.save();
                   _showPending(context);
                   Map<String, dynamic> response = await _credential.login();
+                  // bar.close();
                   if (response['statusCode'] == 200) {
                     Role role = convertToRole(response['user']['role']);
                     if (role != null) {
-                      _showSuccess(context);
                       User user = new User();
+
                       user.firstName = response['user']['firstName'];
                       user.lastName = response['user']['lastName'];
                       user.provider = response['user']['provider'];
@@ -81,7 +103,6 @@ class _MyAppState extends State<Body> {
                       user.role = role;
                       setState(() {
                         _user = user;
-                        callback;
                       });
                       if (user.role == Role.ADMINISTRATOR) {
                         Navigator.push(
@@ -90,22 +111,12 @@ class _MyAppState extends State<Body> {
                             builder: (context) => AdminHubView(),
                           )
                         );
-                      } else {
-                        if (user.provider == null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileScreen(user: user,)
-                            )
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmployeeHubView(user: user,)
-                            )
-                          );
-                        }
+                      }
+                      if (user.role == Role.SERVICE_PROVIDER) {
+                        _nagivateToServiceProvider(user);
+                      }
+                      if (user.role == Role.PATIENT) {
+                        _navigateToPatient(user);
                       }
                     } else {
                       _showFailure(context, "Client role error");
@@ -160,24 +171,44 @@ class _MyAppState extends State<Body> {
     }
   }
 
-  _showPending(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _showPending(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(SnackBar(
       content: Text('Attempting to login'),
       backgroundColor: Colors.orange,
     ));
   }
 
-  _showSuccess(BuildContext context) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Login successful'),
-      backgroundColor: Colors.green,
-    ));
-  }
-
   _showFailure(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
+    return Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
     ));
+  }
+
+  void _nagivateToServiceProvider(User user) {
+    if (user.provider == null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileScreen(user: user,)
+        )
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmployeeHubView(user: user,)
+        )
+      );
+    }
+  }
+
+  void _navigateToPatient(User user) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PatientHubView(user: user,)
+        )
+      );
   }
 }
