@@ -1,6 +1,11 @@
 # CHAD Limited.
 [![CircleCI](https://circleci.com/gh/professor-forward/chad/tree/master.svg?style=svg&circle-token=ecfa7070fa171e53e5b6170984631f5a68fb20b0)](https://circleci.com/gh/professor-forward/chad/tree/master)
 
+This project is completed for the *Introduction to Software Engineering* course at University of Ottawa. It is a 
+
+## Screenshots
+[Click Here for Screenshots](https://drive.google.com/file/d/1rqlpOUli2TrED-n4ieMMbGMrNleR_ZXg/view?usp=sharing)
+
 ## Team Members
 
 | Name | Student Number |
